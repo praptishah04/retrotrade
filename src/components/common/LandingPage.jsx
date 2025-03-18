@@ -38,7 +38,7 @@ const LandingPage = () => {
                   </Link>
                 </li>
                 <li className="nav-item">
-                  <Link className="nav-link" to="/about">
+                  <Link className="nav-link" to="/aboutus">
                     About Us
                   </Link>
                 </li>

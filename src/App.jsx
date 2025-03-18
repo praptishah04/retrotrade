@@ -2,7 +2,7 @@ import { useState } from 'react'
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import { UserSidebar } from './components/layouts/UserSidebar'
-import './App.css'
+// import './App.css'
 import './assets/adminlte.css'
 import './assets/adminlte.min.css'
 import { Route, Routes } from 'react-router-dom'
@@ -23,6 +23,7 @@ import LandingPage from './components/common/LandingPage'
 import { ViewProducts } from './components/seller/ViewProducts'
 import  ExploreItems  from './components/common/ExploreItems'
 import ContactUs from './components/common/ContactUs'
+import AboutUs from './components/common/AboutUs'
 
 
 
@@ -40,6 +41,7 @@ function App() {
           <Route path='/signup' element={<Signup/>}></Route>
           <Route path='/' element={<LandingPage/>}></Route>
           <Route path='/contactus' element={<ContactUs/>}></Route>
+          <Route path='/aboutus' element={<AboutUs/>}></Route>
           <Route path='/exploreitems' element={<ExploreItems/>}></Route>
           <Route path='/demo' element={<Demo/>}></Route>
 

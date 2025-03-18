@@ -1,0 +1,139 @@
+.about-us-container {
+    max-width: 1700px;
+    margin: 0 auto;
+    padding: 40px 200px;
+    font-family: 'Arial', sans-serif;
+    color: #333;
+    background: #f9f9f9;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  }
+  
+  .about-us-header {
+    text-align: center;
+    margin-bottom: 60px;
+  }
+  
+  .about-us-header h1 {
+    font-size: 3rem;
+    color: #2c3e50;
+    margin-bottom: 10px;
+    animation: fadeIn 1s ease-in-out;
+  }
+  
+  .tagline {
+    font-size: 1.4rem;
+    color: #7f8c8d;
+    font-style: italic;
+    animation: fadeIn 1.5s ease-in-out;
+  }
+  
+  .about-us-content {
+    margin-bottom: 60px;
+  }
+  
+  .mission-section, .features-section, .team-section, .future-section {
+    margin-bottom: 60px;
+    animation: slideIn 1s ease-in-out;
+  }
+  
+  h2 {
+    font-size: 2.2rem;
+    color: #2c3e50;
+    margin-bottom: 20px;
+    position: relative;
+  }
+  
+  h2::after {
+    content: '';
+    width: 60px;
+    height: 4px;
+    background: #e67e22;
+    position: absolute;
+    bottom: -10px;
+    left: 0;
+    border-radius: 2px;
+  }
+  
+  p {
+    font-size: 1.1rem;
+    line-height: 1.8;
+    color: #555;
+  }
+  
+  .features-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 30px;
+  }
+  
+  .feature-card {
+    background: #fff;
+    padding: 25px;
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    text-align: center;
+  }
+  
+  .feature-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+  }
+  
+  .icon {
+    font-size: 2.5rem;
+    margin-bottom: 15px;
+  }
+  
+  .feature-card h3 {
+    font-size: 1.5rem;
+    color: #2c3e50;
+    margin-bottom: 10px;
+  }
+  
+  .about-us-footer {
+    text-align: center;
+    padding: 40px 20px;
+    background: #2c3e50;
+    color: #fff;
+    border-radius: 15px;
+    animation: fadeIn 2s ease-in-out;
+  }
+  
+  .join-button {
+    background: #e67e22;
+    color: #fff;
+    border: none;
+    padding: 12px 30px;
+    font-size: 1.1rem;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s ease, transform 0.3s ease;
+  }
+  
+  .join-button:hover {
+    background: #d35400;
+    transform: scale(1.05);
+  }
+  
+  /* Animations */
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+  
+  @keyframes slideIn {
+    from {
+      transform: translateY(20px);
+      opacity: 0;
+    }
+    to {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
