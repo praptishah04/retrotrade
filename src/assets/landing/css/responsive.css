@@ -1,0 +1,113 @@
+/* Responsive Styles */
+
+/* Ensure full-screen behavior for all devices */
+html, body, #root, .hero_area {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+.hero_area {
+  min-height: 100vh; /* Ensure it covers the full viewport height */
+  display: flex;
+  flex-direction: column;
+}
+
+/* Small devices (phones, 575px and below) */
+@media (max-width: 575px) {
+  .navbar-brand {
+    font-size: 20px;
+  }
+
+  .quote_btn-container .btn-1,
+  .quote_btn-container .btn-2 {
+    padding: 6px 15px;
+    font-size: 14px;
+  }
+
+  .slider_section .detail_box h1 {
+    font-size: 28px;
+  }
+
+  .slider_section .detail_box p {
+    font-size: 14px;
+  }
+
+  .slider_section .btn-box .btn-1,
+  .slider_section .btn-box .btn-2 {
+    padding: 8px 20px;
+    font-size: 14px;
+  }
+
+  .about_section .detail-box h2 {
+    font-size: 24px;
+  }
+
+  .about_section .detail-box p {
+    font-size: 14px;
+  }
+
+  .contact_section h2 {
+    font-size: 24px;
+  }
+
+  .contact_section p {
+    font-size: 14px;
+  }
+}
+
+/* Medium devices (tablets, 767px and below) */
+@media (max-width: 767px) {
+  .col-md-6 {
+    flex: 0 0 100%;
+    max-width: 100%;
+  }
+
+  .slider_section .detail_box {
+    text-align: center;
+  }
+
+  .slider_section .img-box {
+    margin-top: 30px;
+  }
+
+  .about_section .img-box {
+    margin-bottom: 30px;
+  }
+}
+
+/* Large devices (desktops, 991px and below) */
+@media (max-width: 991px) {
+  .navbar-nav {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .quote_btn-container {
+    margin-top: 10px;
+  }
+
+  .slider_section .detail_box h1 {
+    font-size: 36px;
+  }
+
+  .slider_section .detail_box p {
+    font-size: 16px;
+  }
+
+  .about_section .detail-box h2 {
+    font-size: 28px;
+  }
+
+  .about_section .detail-box p {
+    font-size: 14px;
+  }
+
+  .contact_section h2 {
+    font-size: 28px;
+  }
+
+  .contact_section p {
+    font-size: 14px;
+  }
+}
