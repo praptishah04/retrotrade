@@ -46,14 +46,14 @@ const AboutUs = () => {
         <section className="team-section">
           <h2>Meet the Team</h2>
           <p>
-            Behind RetroTrade is a passionate team of developers, designers, and sustainability advocates dedicated to creating a platform that makes second-hand shopping accessible and enjoyable for everyone. We’re committed to building a community that values sustainability, affordability, and trust.
+            Behind RetroTrade is a passionate team of developers, designers, and sustainability advocates dedicated to creating a platform that makes second-hand shopping accessible and enjoyable for everyone. We're committed to building a community that values sustainability, affordability, and trust.
           </p>
         </section>
 
         <section className="future-section">
           <h2>Our Vision for the Future</h2>
           <p>
-            We’re constantly working to improve RetroTrade and bring you new features. In the future, we plan to introduce AI-powered product recommendations, live auctions, and even a mobile app to make second-hand shopping more convenient than ever. Together, we can build a more sustainable world, one pre-loved item at a time.
+            We're constantly working to improve RetroTrade and bring you new features. In the future, we plan to introduce AI-powered product recommendations, live auctions, and even a mobile app to make second-hand shopping more convenient than ever. Together, we can build a more sustainable world, one pre-loved item at a time.
           </p>
         </section>
       </div>

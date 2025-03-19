@@ -13,8 +13,8 @@ body {
 
 /* Header Section */
 .header_section {
-  background: #333;
-  padding: 15px 0;
+  background: #000000;
+  padding: 5px 0;
   position: sticky;
   top: 0;
   z-index: 1000;
@@ -62,7 +62,7 @@ body {
 
 /* Hero Section */
 .hero_section {
-  padding: 70px 300px;
+  padding: 50px 50px; 
 }
 
 .hero_section h1 {
@@ -73,7 +73,7 @@ body {
 
 .hero_section p {
   font-size: 18px;
-  color: #666;
+  color: #1c1c1c;
   margin: 20px 0;
 }
 
@@ -84,7 +84,7 @@ body {
 
 /* About Section */
 .about_section {
-  padding: 100px 0;
+  padding: 0px 0;
   background: #fff;
 }
 
@@ -96,7 +96,7 @@ body {
 
 .about_section p {
   font-size: 16px;
-  color: #666;
+  color: #160202;
   margin: 20px 0;
 }
 
@@ -182,7 +182,8 @@ body {
 /* Contact Section */
 .contact_section {
   padding: 100px 0;
-  background: #f9f9f9;
+  /* background: #f9f9f9; */
+  background: white;
 }
 
 .contact_section h2 {
@@ -199,19 +200,20 @@ body {
 
 .contact-info p {
   font-size: 16px;
-  color: #333;
+  /* color: #333; */
   margin: 10px 0;
+  color: black;
 }
 
 /* Footer Section */
 .footer_section {
   background: #333;
-  color: #fff;
+  /* color: #fff; */
   padding: 20px 0;
   text-align: center;
 }
 
 .footer_section p {
   margin: 0;
-  font-size: 14px;
+  font-size: 20px;
 }

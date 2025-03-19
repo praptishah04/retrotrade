@@ -7,7 +7,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import { Bounce } from 'react-toastify';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye, faEyeSlash, faSpinner } from '@fortawesome/free-solid-svg-icons';
-import loginimage from "../../assets/images/loginimage.avif"
+// import loginimage from "../../assets/images/loginimage.avif"
 
 export const Login = () => {
   const { register, handleSubmit, formState: { errors } } = useForm();
@@ -74,7 +74,7 @@ export const Login = () => {
 
   return (
       <div className="vh-100 vw-100 d-flex align-items-center justify-content-center" style={{ 
-        backgroundImage: `url(${loginimage})`, // Use the imported image here
+        // backgroundImage: `url(${loginimage})`, // Use the imported image here
         backgroundSize: 'cover',
         backgroundPosition: 'center',
         backgroundRepeat: 'no-repeat',

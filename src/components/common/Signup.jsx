@@ -6,7 +6,7 @@ import { Bounce, toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye, faEyeSlash, faSpinner } from '@fortawesome/free-solid-svg-icons';
-import signupimage from "../../assets/images/signupimage.avif"
+// import signupimage from "../../assets/images/signupimage.avif"
 
 export const Signup = () => {
   const { register, handleSubmit, formState: { errors }, watch } = useForm();
@@ -77,7 +77,7 @@ export const Signup = () => {
 
   return (
     <div className="vh-100 vw-100 d-flex align-items-center justify-content-center" style={{ 
-      backgroundImage: `url(${signupimage})`, // Use the imported image here
+      // backgroundImage: `url(${signupimage})`, // Use the imported image here
       backgroundSize: 'cover',
       backgroundPosition: 'center',
       backgroundRepeat: 'no-repeat',
@@ -85,7 +85,7 @@ export const Signup = () => {
     }}>
       <div className="card p-4 shadow-lg" style={{ 
         width: "600px", 
-        maxWidth:"90vw",
+        maxWidth: "90vw",
         backgroundColor: "rgba(255, 255, 255, 0.9)", 
         borderRadius: "15px",
         backdropFilter: "blur(10px)",
@@ -118,7 +118,7 @@ export const Signup = () => {
           </p>
         </div>
 
-        <div className="d-flex flex-column gap-3 mb-4">
+        <div className="d-flex flex-column mb-4" style={{ gap: "1.5rem" }}>
           <button
             className="btn btn-primary w-100 rounded-pill py-2"
             onClick={() => handleUserTypeSelection('buyer')}
@@ -126,7 +126,10 @@ export const Signup = () => {
               background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
               border: "none",
               boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
+              transition: "transform 0.2s, box-shadow 0.2s",
             }}
+            onMouseOver={(e) => e.currentTarget.style.transform = "scale(1.02)"}
+            onMouseOut={(e) => e.currentTarget.style.transform = "scale(1)"}
           >
             Signup as Buyer
           </button>
@@ -138,13 +141,17 @@ export const Signup = () => {
               background: "linear-gradient(135deg, #6a11cb 0%, #2575fc 100%)",
               border: "none",
               boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
+              transition: "transform 0.2s, box-shadow 0.2s",
             }}
+            onMouseOver={(e) => e.currentTarget.style.transform = "scale(1.02)"}
+            onMouseOut={(e) => e.currentTarget.style.transform = "scale(1)"}
           >
             Signup as Seller
           </button>
         </div>
 
-        <form onSubmit={handleSubmit(submitHandler)}>
+
+        {/* <form onSubmit={handleSubmit(submitHandler)}>
           <div className="mb-3">
             <label htmlFor="firstname" className="form-label">First Name</label>
             <input
@@ -240,12 +247,12 @@ export const Signup = () => {
             }}
           >
             {isLoading ? <FontAwesomeIcon icon={faSpinner} spin /> : 'Signup'}
-          </button>
+          </button> */}
 
           <p className="text-center mt-3" style={{ color: "#555" }}>
             Already have an account? <Link to="/login" style={{ textDecoration: "none", color: "#007bff" }}>Login</Link>
           </p>
-        </form>
+        {/* </form> */}
       </div>
     </div>
   );

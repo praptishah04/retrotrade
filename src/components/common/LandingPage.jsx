@@ -4,10 +4,9 @@ import "../../assets/landing/css/responsive.css";
 import "../../assets/landingpage.css";
 import landingpage from "../../assets/images/landingpage_image.avif";
 import landingpage2 from "../../assets/images/landingpage2.jpg";
-import image from "../../assets/images/image.jpg"
+import image from "../../assets/images/image.jpg";
 import { Link } from "react-router-dom";
 import { Carousel } from "react-bootstrap";
-
 
 const LandingPage = () => {
   return (
@@ -69,17 +68,14 @@ const LandingPage = () => {
           <div className="row">
             <div className="col-md-6">
               <div className="detail_box">
-                <h1>Welcome to Retrotrade</h1>
+                <h2><strong>Welcome to Retrotrade</strong></h2>
                 <p>
-                  Discover a world of second-hand treasures! Whether you're buying or selling, our platform makes it easy to save money and enjoy a seamless, secure shopping experience.
+                  <strong>Discover a world of second-hand treasures! Whether you're buying or selling, our platform makes it easy to save money and enjoy a seamless, secure shopping experience.</strong>
                 </p>
-                {/* <p>
-                  Discover vintage and retro items that bring back the charm of the past. Whether you're a collector or a nostalgic enthusiast, Retrotrade has something special for you.
-                </p> */}
                 <div className="btn-box">
                   <Link to="/exploreitems" className="btn-2">
                     Explore Items
-                  </Link> <span></span> <span></span>
+                  </Link>
                   <Link to="/signup" className="btn-1">
                     Get Started
                   </Link>
@@ -111,30 +107,25 @@ const LandingPage = () => {
                 <img src={landingpage} alt="About Retrotrade" className="img-fluid" />
               </div>
             </div>
-            <div className="col-md-6">
+            <div className="col-md-5">
               <div className="detail-box">
                 <div className="heading_container">
                   <h2>About Retrotrade</h2>
                 </div>
                 <p>
-                  At RetroTrade, we believe in creating a sustainable, budget-friendly, and convenient way to buy and sell second-hand goods. Our platform is designed to connect individuals looking to declutter their space with those seeking affordable and high-quality pre-owned items. By fostering a circular economy, we help reduce waste while making second-hand shopping secure, seamless, and trustworthy.
-                  With user-friendly features like secure payments, direct communication, product negotiations, and a reliable rating system, we ensure a smooth experience for both buyers and sellers. Whether you're looking to find great deals or earn from unused items, RetroTrade is your go-to marketplace for pre-loved goods.
-                  Join us in redefining the way we shop sustainably!
+                  <strong>At RetroTrade, we believe in creating a sustainable, budget-friendly, and convenient way to buy and sell second-hand goods. Our platform is designed to connect individuals looking to declutter their space with those seeking affordable and high-quality pre-owned items. By fostering a circular economy, we help reduce waste while making second-hand shopping secure, seamless, and trustworthy.</strong>
                 </p>
-                {/* <p>
-                  Founded in 2023, Retrotrade has grown into a community of passionate collectors and enthusiasts. We believe in preserving the charm of the past while making it accessible to everyone.
-                </p> */}
-                {/* <Link to="/about" className="btn-2">
+                <Link to="/aboutus" className="btn-2">
                   Learn More
-                </Link> */}
+                </Link>
               </div>
             </div>
           </div>
         </div>
       </section>
 
-     {/* Features Section */}
-     <section className="features_section">
+      {/* Features Section */}
+      <section className="features_section">
         <div className="container">
           <div className="heading_container">
             <h2>Why Choose Retrotrade?</h2>
@@ -163,7 +154,7 @@ const LandingPage = () => {
             </div>
           </div>
         </div>
-        </section>
+      </section>
 
       {/* Testimonials Section */}
       <section className="testimonials_section">
@@ -193,22 +184,6 @@ const LandingPage = () => {
           </div>
         </div>
       </section>
-
-      {/* Newsletter Section */}
-      {/* <section className="newsletter_section">
-        <div className="container">
-          <div className="heading_container">
-            <h2>Subscribe to Our Newsletter</h2>
-          </div>
-          <p>Stay updated with our latest collections and exclusive offers.</p>
-          <form className="newsletter_form">
-            <input type="email" placeholder="Enter your email" required />
-            <button type="submit" className="btn-1">
-              Subscribe
-            </button>
-          </form>
-        </div>
-      </section> */}
 
       {/* Contact Us Section */}
       <section className="contact_section" id="contact">
