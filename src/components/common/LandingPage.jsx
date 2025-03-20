@@ -1,4 +1,5 @@
 import React from "react";
+// import { useRef } from "react";
 import "../../assets/landing/css/style.css";
 import "../../assets/landing/css/responsive.css";
 import "../../assets/landingpage.css";
@@ -9,6 +10,14 @@ import { Link } from "react-router-dom";
 import { Carousel } from "react-bootstrap";
 
 const LandingPage = () => {
+  const scrollToSection = (sectionId) => {
+    const element = document.getElementById(sectionId);
+    if (element) {
+      element.scrollIntoView({ behavior: "smooth" });
+    }
+  }
+
+
   return (
     <div className="hero_area">
       {/* Header Section */}
@@ -41,22 +50,25 @@ const LandingPage = () => {
                     About Us
                   </Link>
                 </li>
+                <a
+                  href="#"
+                  className="nav-link"
+                  onClick={() => scrollToSection("contactus")}
+                >
+                Contact Us
+                </a>
+
                 <li className="nav-item">
-                  <Link className="nav-link" to="/contactus">
-                    Contact Us
+                  <Link className="nav-link" to="/buyerlogin">
+                    Buyer Login
+                  </Link>
+                </li>
+                <li className="nav-item">
+                  <Link className="nav-link" to="/sellerlogin">
+                    Seller Login
                   </Link>
                 </li>
               </ul>
-              <div className="quote_btn-container">
-                <div className="btn-box">
-                  <Link to="/login" className="btn-1">
-                    Login
-                  </Link>
-                  <Link to="/signup" className="btn-2">
-                    Signup
-                  </Link>
-                </div>
-              </div>
             </div>
           </nav>
         </div>
@@ -84,12 +96,20 @@ const LandingPage = () => {
             </div>
             <div className="col-md-6">
               <div className="img-box">
-                <Carousel>
+                <Carousel prevLabel="" nextLabel="">
                   <Carousel.Item>
-                    <img src={landingpage2} alt="Retrotrade Slider" className="img-fluid" />
+                    <img
+                      src={landingpage2}
+                      alt="Retrotrade Slider"
+                      className="carousel-image img-fluid"
+                    />
                   </Carousel.Item>
                   <Carousel.Item>
-                    <img src={image} alt="Retrotrade Slider" className="img-fluid" />
+                    <img
+                      src={image}
+                      alt="Retrotrade Slider"
+                      className="carousel-image img-fluid"
+                    />
                   </Carousel.Item>
                 </Carousel>
               </div>
@@ -186,7 +206,7 @@ const LandingPage = () => {
       </section>
 
       {/* Contact Us Section */}
-      <section className="contact_section" id="contact">
+      <section className="contact_section" id="contactus" >
         <div className="container">
           <div className="heading_container">
             <h2>Contact Us</h2>
@@ -212,7 +232,7 @@ const LandingPage = () => {
       <footer className="footer_section">
         <div className="container">
           <p>&copy; 2023 Retrotrade. All rights reserved.</p>
-        </div>
+        </div>         
       </footer>
     </div>
   );

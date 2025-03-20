@@ -1,83 +1,83 @@
 import React, { useState } from 'react';
-import { useForm } from 'react-hook-form';
+// import { useForm } from 'react-hook-form';
 import { Link, useNavigate } from 'react-router-dom';
-import axios from 'axios';
+// import axios from 'axios';
 import { Bounce, toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEye, faEyeSlash, faSpinner } from '@fortawesome/free-solid-svg-icons';
-// import signupimage from "../../assets/images/signupimage.avif"
+// import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+// import { faEye, faEyeSlash, faSpinner } from '@fortawesome/free-solid-svg-icons';
+import signupimage from "../../assets/images/signupimage.jpg"
 
 export const Signup = () => {
-  const { register, handleSubmit, formState: { errors }, watch } = useForm();
-  const navigate = useNavigate();
-  const [isLoading, setIsLoading] = useState(false);
-  const [showPassword, setShowPassword] = useState(false);
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  // const { register, handleSubmit, formState: { errors }, watch } = useForm();
+  // const navigate = useNavigate();
+  // const [isLoading, setIsLoading] = useState(false);
+  // const [showPassword, setShowPassword] = useState(false);
+  // const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
-  const submitHandler = async (data) => {
-    if (data.password !== data.confirmpassword) {
-      toast.error('Passwords do not match', {
-        position: "top-center",
-        autoClose: 2000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "colored",
-        transition: Bounce,
-      });
-      return;
-    }
+  // const submitHandler = async (data) => {
+  //   if (data.password !== data.confirmpassword) {
+  //     toast.error('Passwords do not match', {
+  //       position: "top-center",
+  //       autoClose: 2000,
+  //       hideProgressBar: false,
+  //       closeOnClick: true,
+  //       pauseOnHover: true,
+  //       draggable: true,
+  //       progress: undefined,
+  //       theme: "colored",
+  //       transition: Bounce,
+  //     });
+  //     return;
+  //   }
 
-    setIsLoading(true);
-    try {
-      data.roleId = "67bd47bf1250b5874cc62c09";
-      const res = await axios.post("/user/signup", data);
+    // setIsLoading(true);
+    // try {
+    //   data.roleId = "67bd47bf1250b5874cc62c09";
+    //   const res = await axios.post("/user/signup", data);
 
-      if (res.status === 201) {
-        toast.success('✅ Successfully Signed Up!', {
-          position: "top-center",
-          autoClose: 900,
-          hideProgressBar: false,
-          closeOnClick: false,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "light",
-          transition: Bounce,
-        });
-        navigate("/login");
-      }
-    } catch (error) {
-      toast.error(error.response?.data?.message || "Signup Failed", {
-        position: "top-center",
-        autoClose: 2000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "colored",
-        transition: Bounce,
-      });
-    } finally {
-      setIsLoading(false);
-    }
-  };
+    //   if (res.status === 201) {
+    //     toast.success('✅ Successfully Signed Up!', {
+    //       position: "top-center",
+    //       autoClose: 900,
+    //       hideProgressBar: false,
+    //       closeOnClick: false,
+    //       pauseOnHover: true,
+    //       draggable: true,
+    //       progress: undefined,
+    //       theme: "light",
+    //       transition: Bounce,
+    //     });
+    //     navigate("/login");
+    //   }
+    // } catch (error) {
+    //   toast.error(error.response?.data?.message || "Signup Failed", {
+    //     position: "top-center",
+    //     autoClose: 2000,
+    //     hideProgressBar: false,
+    //     closeOnClick: true,
+    //     pauseOnHover: true,
+    //     draggable: true,
+    //     progress: undefined,
+    //     theme: "colored",
+    //     transition: Bounce,
+    //   });
+    // } finally {
+    //   setIsLoading(false);
+    // }
+  // };
 
-  const handleUserTypeSelection = (userType) => {
-    if (userType === 'buyer') {
-      navigate('/buyersignup');
-    } else if (userType === 'seller') {
-      navigate('/sellersignup');
-    }
-  };
+  // const handleUserTypeSelection = (userType) => {
+  //   if (userType === 'buyer') {
+  //     navigate('/buyersignup');
+  //   } else if (userType === 'seller') {
+  //     navigate('/sellersignup');
+  //   }
+  // };
 
   return (
     <div className="vh-100 vw-100 d-flex align-items-center justify-content-center" style={{ 
-      // backgroundImage: `url(${signupimage})`, // Use the imported image here
+       backgroundImage: `url(${signupimage})`, // Use the imported image here
       backgroundSize: 'cover',
       backgroundPosition: 'center',
       backgroundRepeat: 'no-repeat',

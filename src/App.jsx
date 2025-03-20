@@ -22,8 +22,10 @@ import { AddProduct } from './components/seller/AddProduct'
 import LandingPage from './components/common/LandingPage'
 import { ViewProducts } from './components/seller/ViewProducts'
 import  ExploreItems  from './components/common/ExploreItems'
-import ContactUs from './components/common/ContactUs'
 import AboutUs from './components/common/AboutUs'
+import { BuyerLogin } from './components/common/BuyerLogin'
+import { SellerLogin } from './components/common/SellerLogin'
+
 
 
 
@@ -40,9 +42,10 @@ function App() {
           <Route path='/login' element={<Login/>}></Route>
           <Route path='/signup' element={<Signup/>}></Route>
           <Route path='/' element={<LandingPage/>}></Route>
-          <Route path='/contactus' element={<ContactUs/>}></Route>
           <Route path='/aboutus' element={<AboutUs/>}></Route>
           <Route path='/exploreitems' element={<ExploreItems/>}></Route>
+          <Route path='/buyerlogin' element={<BuyerLogin/>}></Route>
+          <Route path='/sellerlogin' element={<SellerLogin/>}></Route>
           <Route path='/demo' element={<Demo/>}></Route>
 
           <Route path='/buyersignup' element={<BuyerSignup/>}></Route>

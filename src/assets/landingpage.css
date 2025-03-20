@@ -217,3 +217,9 @@ body {
   margin: 0;
   font-size: 20px;
 }
+
+.carousel-image {
+  width: 100%; /* Ensures the image takes up the full width of the carousel */
+  height: 400px; /* Set a fixed height for all images */
+  object-fit: cover; /* Ensures the image covers the entire area without distortion */
+}
