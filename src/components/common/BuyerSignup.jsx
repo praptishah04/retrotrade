@@ -109,7 +109,7 @@ export const BuyerSignup = () => {
           theme: 'light',
           transition: Bounce,
         });
-        navigate('/login');
+        navigate('/buyerlogin');
       }
     } catch (error) {
       toast.error(error.response?.data?.message || 'Signup Failed', {

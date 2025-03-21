@@ -11,8 +11,9 @@ const ExploreItems = () => {
   const [error, setError] = useState(null);
   const navigate = useNavigate();
 
+  // Fetch products from the API
   useEffect(() => {
-    axios.get('product/getproduct')
+    axios.get('/product/getproduct') // Ensure this is the correct endpoint
       .then(response => {
         setProducts(response.data.data);
         setLoading(false);
@@ -24,21 +25,59 @@ const ExploreItems = () => {
       });
   }, []);
 
-  const handleProductClick = (buyerId) => {
-    navigate(`/productdetails/${buyerId}`);
+  // Handle product click to view details
+  const handleProductClick = (productId) => {
+    navigate(`/productdetails/${productId}`);
   };
 
+  // Handle add to cart
+  const handleAddToCart = async (product) => {
+    const buyerId = localStorage.getItem('id');
+    const userRole = localStorage.getItem('role');
+    if (userRole !== 'BUYER') {
+      navigate('/buyerlogin');
+      return;
+    }
+
+    try {
+      let price = product.price; // Initialize price
+
+      if (typeof price === 'string') {
+        price = parseFloat(price.replace('₹', ''));
+      } else if (typeof price === 'number') {
+        // Price is already a number, no need to replace
+      } else {
+        console.error('Invalid product price:', product.price);
+        alert('Invalid product price.');
+        return; // Stop execution
+      }
+
+      const response = await axios.post('/cart/addcart', {
+        buyerId: buyerId,
+        productId: product._id,
+        productPrice: price, // Use the parsed price
+        quantity: 1,
+      });
+      navigate('/cart', { state: { productId: product._id } });
+    } catch (error) {
+      alert('Error adding to cart: ' + (error?.message || error));
+    }
+  };
+
+  // Filter products based on search term
   const filteredProducts = products.filter(product =>
     product?.name?.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   return (
     <div className="explore-items-container">
+      {/* Hero Section */}
       <div className="hero-section">
         <h1>Discover Amazing Products</h1>
         <p>Explore our curated collection of high-quality items.</p>
       </div>
 
+      {/* Search Bar */}
       <div className="search-container">
         <FaSearch className="search-icon" />
         <input
@@ -50,23 +89,34 @@ const ExploreItems = () => {
         />
       </div>
 
+      {/* Loading and Error Handling */}
       {loading ? (
         <div className="loading-spinner">Loading...</div>
       ) : error ? (
         <div className="error-message">{error}</div>
       ) : (
-        <div className="product-list">
+        <div className="product-grid">
           {filteredProducts.map(product => (
-            <div key={product._id} className="product-card" onClick={() => handleProductClick(product._id)}>
-              <div className="product-image-container">
-                <img src={product.imageURL} alt={product.name} className="product-image" />
-                <div className="image-overlay"></div>
-              </div>
-              <div className="product-info">
-                <h3>{product.name}</h3>
-                <p className="product-price">₹{product.price}</p>
-                <button className="view-details-button">View Details</button>
-              </div>
+            <div key={product._id} className="product-card">
+              <img
+                src={product.imageURL}
+                alt={product.name}
+                onClick={() => handleProductClick(product._id)}
+              />
+              <h3>{product.name}</h3>
+              <p>₹{product.price}</p>
+              <button
+                className="view-details-button"
+                onClick={() => handleProductClick(product._id)}
+              >
+                View Details
+              </button>
+              <button
+                className="add-to-cart-button"
+                onClick={() => handleAddToCart(product)}
+              >
+                Add to Cart
+              </button>
             </div>
           ))}
         </div>

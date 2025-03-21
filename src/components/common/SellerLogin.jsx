@@ -7,7 +7,9 @@ import { Bounce } from 'react-toastify';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye, faEyeSlash, faSpinner } from '@fortawesome/free-solid-svg-icons';
 import { motion } from 'framer-motion';
-import loginImage from '../../assets/images/loginimage2.jpg'; // Import the background image
+// import loginImage from '../../assets/images/loginimage2.jpg'; // Import the background image
+import loginimage from "../../assets/images/loginimage2.jpg"
+// import loginimage from "../../assets/images/loginimage3.avif"
 import '../../assets/landing/css/sellerlogin.css'; // Import the CSS file
 
 export const SellerLogin = () => {
@@ -75,7 +77,7 @@ export const SellerLogin = () => {
     <div 
       className="seller-login-container"
       style={{ 
-        backgroundImage: `url(${loginImage})`, // Set background image
+        backgroundImage: `url(${loginimage})`, // Set background image
         backgroundSize: 'cover',
         backgroundPosition: 'center',
         backgroundRepeat: 'no-repeat',
