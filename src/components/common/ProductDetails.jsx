@@ -164,7 +164,7 @@ export const ProductDetails = () => {
                                 style={{
                                   width: "170px",
                                   height: "auto",
-                                  margiTop: "30px",
+                                  marginTop: "30px",
                                 }}
                               />
                               <div>

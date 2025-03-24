@@ -58,10 +58,10 @@ const AboutUs = () => {
         </section>
       </div>
 
-      <div className="about-us-footer">
+      {/* <div className="about-us-footer">
         <p>Join us today and be part of the RetroTrade community!</p>
         <button className="join-button">Get Started</button>
-      </div>
+      </div> */}
     </div>
   );
 };

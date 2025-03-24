@@ -7,6 +7,7 @@ import { Bounce } from 'react-toastify';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye, faEyeSlash, faSpinner } from '@fortawesome/free-solid-svg-icons';
 import { motion } from 'framer-motion';
+import axios from 'axios'; // Ensure axios is imported
 import loginImage from '../../assets/images/loginimage2.jpg'; // Import the background image
 import '../../assets/landing/css/sellerlogin.css'; // Import the CSS file
 
@@ -19,8 +20,10 @@ export const BuyerLogin = () => {
   const submitHandler = async (data) => {
     setIsLoading(true);
     try {
-      data.roleId = "67c60a1481267c1168056a22";
-      const res = await axios.post("/user/login", data);
+      data.roleId = "67c60a1481267c1168056a22"; // Add roleId to the request payload
+      const res = await axios.post("http://localhost:4000/buyer/login", data); // Use full backend URL
+
+      console.log("API Response:", res.data); // Debugging: Log the response
 
       if (res.status === 200) {
         toast.success('️✅ Logged in Successfully', {
@@ -35,11 +38,16 @@ export const BuyerLogin = () => {
           transition: Bounce,
         });
 
+        // Store user data in localStorage
         localStorage.setItem("id", res.data.data._id);
-        localStorage.setItem("role", res.data.data.roleId.name);
+        localStorage.setItem("roles", res.data.data.roleId.name);
 
-        if (res.data.data.roleId.name === "SELLER") {
-          navigate("/sellerprofile");
+        console.log("Stored ID:", localStorage.getItem("id")); // Debugging: Log stored ID
+        console.log("Stored Role:", localStorage.getItem("roles")); // Debugging: Log stored role
+
+        // Navigate based on role
+        if (res.data.data.roleId?.name === "BUYER") {
+          navigate("/productdetails/:id");
         } else {
           toast.error("Invalid role", {
             position: "top-center",
@@ -55,7 +63,15 @@ export const BuyerLogin = () => {
         }
       }
     } catch (error) {
-      toast.error(error.response?.data?.message || "Login Failed", {
+      let errorMessage = "Login Failed";
+      if (error.response) {
+        errorMessage = error.response.data?.message || errorMessage;
+      } else if (error.request) {
+        errorMessage = "No response from the server";
+      } else {
+        errorMessage = error.message;
+      }
+      toast.error(errorMessage, {
         position: "top-center",
         autoClose: 2000,
         hideProgressBar: false,

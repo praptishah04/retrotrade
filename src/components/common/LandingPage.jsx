@@ -5,9 +5,9 @@ import "../../assets/landing/css/responsive.css";
 import "../../assets/landingpage.css";
 import landingpage from "../../assets/images/landingpage_image.avif";
 import landingpage2 from "../../assets/images/landingpage2.jpg";
-import image from "../../assets/images/image.jpg";
+// import image from "../../assets/images/image.jpg";
 import { Link } from "react-router-dom";
-import { Carousel } from "react-bootstrap";
+// import { Carousel } from "react-bootstrap";
 
 const LandingPage = () => {
   const scrollToSection = (sectionId) => {
@@ -96,7 +96,10 @@ const LandingPage = () => {
             </div>
             <div className="col-md-6">
               <div className="img-box">
-                <Carousel prevLabel="" nextLabel="">
+              <div className="img-box">
+                <img src={landingpage2} alt="About Retrotrade" className="img-fluid" />
+              </div>
+                {/* <Carousel prevLabel="" nextLabel="">
                   <Carousel.Item>
                     <img
                       src={landingpage2}
@@ -111,7 +114,7 @@ const LandingPage = () => {
                       className="carousel-image img-fluid"
                     />
                   </Carousel.Item>
-                </Carousel>
+                </Carousel> */}
               </div>
             </div>
           </div>
