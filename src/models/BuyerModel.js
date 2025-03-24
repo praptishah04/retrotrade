@@ -8,7 +8,16 @@ const buyerSchema = new Schema({
     },
     lastname:{
         type:String,
-        default:true
+        
+    },
+    email: {
+        type: String,
+        required: true,
+        unique: true
+    },
+    password: {
+        type: String,
+        required: true
     },
     roleId:{
         type:Schema.Types.ObjectId,
