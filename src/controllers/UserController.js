@@ -51,12 +51,14 @@ const buyerSignUp = async (req, res) => {
         req.body.password = hashedPassword;
 
         // Create a new buyer in the database
-        const createdBuyer = await (await UserModel.create(req.body))
+        // const createdBuyer = await (await UserModel.create(req.body))
+        const CreatedBuyer = await UserModel.create(req.body)
+        await mailUtil.sendingMail(CreatedBuyer.email,"welcome to retrotrade ","this is welcome mail")
 
         // Respond with a success message and the created buyer data
         res.status(201).json({
             message: "Buyer created successfully",
-            data: createdBuyer
+            data: CreatedBuyer
         });
     } catch (err) {
         // Log the error and respond with an error message
