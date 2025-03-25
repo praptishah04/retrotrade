@@ -1,6 +1,8 @@
 const  UserModel = require("../models/UserModels")
 const bcrypt = require("bcrypt")
 const mailUtil = require("../utils/MailUtil")
+const jwt = require("jsonwebtoken");
+const secret = "secret";
 
 // const addUser1 = async(req,res)=>{
 
@@ -207,6 +209,48 @@ const getAllUsers = async (req,res)=>{
     })
 }
 
+const forgotPassword = async (req, res) => {
+    const email = req.body.email;
+    const foundUser = await UserModel.findOne({ email: email });
+  
+    if (foundUser) {
+      const token = jwt.sign(foundUser.toObject(), secret);
+      console.log(token);
+      const url = `http://localhost:5173/resetpassword/${token}`;
+      const mailContent = `<html>
+                            <a href ="${url}">rest password</a>
+                            </html>`;
+      //email...
+      await mailUtil.sendingMail(foundUser.email, "reset password", mailContent);
+      res.json({
+        message: "reset password link sent to mail.",
+      });
+    } else {
+      res.json({
+        message: "user not found register first..",
+      });
+    }
+  };
+
+
+const resetpassword = async (req, res) => {
+    const token = req.body.token; //decode --> email | id
+    const newPassword = req.body.password;
+  
+    const userFromToken = jwt.verify(token, secret);
+    //object -->email,id..
+    //password encrypt...
+    const salt = bcrypt.genSaltSync(10);
+    const hashedPassword = bcrypt.hashSync(newPassword,salt);
+  
+    const updatedUser = await UserModel.findByIdAndUpdate(userFromToken._id, {
+      password: hashedPassword,
+    });
+    res.json({
+      message: "password updated successfully..",
+    });
+  };
+
 
 // const deleteUser = async(req,res)=>{
 //     const deletedUser = await UserModel.findByIdAndDelete(req.params.id)
@@ -231,5 +275,5 @@ const getAllUsers = async (req,res)=>{
 
 
 module.exports = {
-    signUp,loginUser,addUser,getAllUsers,buyerSignUp,sellerSignup,adminSignup
+    signUp,loginUser,addUser,getAllUsers,buyerSignUp,sellerSignup,adminSignup,forgotPassword,resetpassword
 }

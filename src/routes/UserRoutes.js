@@ -10,6 +10,8 @@ routes.post("/user/login",userController.loginUser)
 routes.post("/user/buyersignup",userController.buyerSignUp)
 routes.post("/user/sellersignup",userController.sellerSignup)
 routes.post("/user/adminsignup",userController.adminSignup)
+routes.post("/user/forgotpassword",userController.forgotPassword)
+routes.post("/user/resetpassword",userController.resetpassword)
 
 
 
