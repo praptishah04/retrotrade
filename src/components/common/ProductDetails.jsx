@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-// import "../../assets/homepage.css";
 import axios from "axios";
 
 export const ProductDetails = () => {
@@ -13,23 +12,27 @@ export const ProductDetails = () => {
 
   useEffect(() => {
     const buyerId = localStorage.getItem("id");
+    if (!buyerId) {
+      console.error("User ID not found in local storage.");
+      return;
+    }
     console.log("Fetching cart for userId:", buyerId);
 
     const fetchCartData = async () => {
       try {
-        const cartResponse = await axios.get(`/cart/user/${buyerId}`); // Fetch cart data
+        const cartResponse = await axios.get(`/cart/user/${buyerId}`);
         if (cartResponse.data && cartResponse.data.data) {
-          setCart(cartResponse.data.data.items); // Assuming your cart data has an 'items' array.
-          setFetchedCartId(cartResponse.data.data._id); // Set fetched cartId
+          setCart(cartResponse.data.data.items || []);
+          setFetchedCartId(cartResponse.data.data._id);
         } else {
-          console.error("Cart data not found");
+          console.error("Cart data not found.");
         }
       } catch (error) {
         console.error("Error fetching cart data:", error);
       }
     };
 
-    fetchCartData(); // Call fetchCartData when component mounts
+    fetchCartData();
 
     if (location.state?.cartItems) {
       setCart(location.state.cartItems);
@@ -38,17 +41,15 @@ export const ProductDetails = () => {
 
   const handleQuantityChange = async (id, amount) => {
     try {
-      const item = cart.find((item) => item.id === id);
+      const item = cart.find((item) => item._id === id);
       if (!item) return;
 
       const newQuantity = Math.max(1, item.quantity + amount);
-      await axios.put(`/cart/${fetchedCartId}/item/${id}`, {
-        quantity: newQuantity,
-      });
+      await axios.put(`/cart/${fetchedCartId}/item/${id}`, { quantity: newQuantity });
 
       setCart((prevCart) =>
         prevCart.map((item) =>
-          item.id === id ? { ...item, quantity: newQuantity } : item
+          item._id === id ? { ...item, quantity: newQuantity } : item
         )
       );
     } catch (error) {
@@ -59,7 +60,7 @@ export const ProductDetails = () => {
   const handleRemoveItem = async (id) => {
     try {
       await axios.delete(`/cart/${fetchedCartId}/item/${id}`);
-      setCart((prevCart) => prevCart.filter((item) => item.id !== id));
+      setCart((prevCart) => prevCart.filter((item) => item._id !== id));
     } catch (error) {
       console.error("Error removing item from cart:", error);
     }
@@ -68,19 +69,17 @@ export const ProductDetails = () => {
   const handleOrderNow = async () => {
     try {
       if (!fetchedCartId) {
-        console.error("Cart ID not available");
+        console.error("Cart ID not available.");
         return;
       }
 
-      // Calculate total order amount
       const totalOrder = cart.reduce(
         (acc, item) => acc + parseFloat(item.price.replace("₹", "")) * item.quantity,
         0
       );
 
-      // Send POST request to /addorder API
       const orderResponse = await axios.post("/order/addorder", {
-        cartId: fetchedCartId, // Use fetched cartId
+        cartId: fetchedCartId,
         orderStatus: "Pending",
         totalOrder: totalOrder,
       });
@@ -127,105 +126,72 @@ export const ProductDetails = () => {
                   Your Cart
                 </h2>
                 <div className="card-tools">
-                  <button
-                    type="button"
-                    className="btn btn-tool"
-                    data-lte-toggle="card-remove"
-                    onClick={closeModal}
-                  >
+                  <button type="button" className="btn btn-tool" onClick={closeModal}>
                     <i className="bi bi-x-lg"></i>
                   </button>
                 </div>
               </div>
               <div className="card-body">
                 {cart.length === 0 ? (
-                  <p style={{ textAlign: "center", color: "#888" }}>
-                    Your cart is empty.
-                  </p>
+                  <p style={{ textAlign: "center", color: "#888" }}>Your cart is empty.</p>
                 ) : (
                   <div>
-                    <div>
-                      {cart.map((item) => {
-                        return (
-                          <div
-                            key={item.id}
-                            className="col-md-12"
-                            style={{ marginBottom: "15px" }}
-                          >
+                    {cart.map((item) => (
+                      <div key={item._id} className="col-md-12" style={{ marginBottom: "15px" }}>
+                        <div>
+                          <h3 style={{ fontSize: "1.7rem" }}>{item.productName}</h3>
+                          <img
+                            src={item.imageUrl}
+                            alt={item.productName}
+                            style={{ width: "170px", height: "auto", marginTop: "30px" }}
+                          />
+                          <div>
+                            <p style={{ fontSize: "1.3rem" }}>Price: {item.price}</p>
+                            <p style={{ fontSize: "1.1rem" }}>{item.description}</p>
                             <div>
-                              <div>
-                                <h3 style={{ fontSize: "1.7rem" }}>
-                                  {item.productName}
-                                </h3>
-                              </div>
-                              <img
-                                src={item.imageUrl}
-                                alt={item.name}
+                              Qty &nbsp;&nbsp;
+                              <button
+                                onClick={() => handleQuantityChange(item._id, -1)}
                                 style={{
-                                  width: "170px",
-                                  height: "auto",
-                                  marginTop: "30px",
+                                  padding: "5px 10px",
+                                  marginRight: "5px",
+                                  border: "1px solid #ccc",
+                                  cursor: "pointer",
                                 }}
-                              />
-                              <div>
-                                <p style={{ fontSize: "1.3rem" }}>
-                                  Price: {item.price}
-                                </p>
-                                <p style={{ fontSize: "1.1rem" }}>
-                                  {item.description}
-                                </p>
-                                <div>
-                                  Qty &nbsp;&nbsp;
-                                  <button
-                                    onClick={() =>
-                                      handleQuantityChange(item.id, -1)
-                                    }
-                                    style={{
-                                      padding: "5px 10px",
-                                      marginRight: "5px",
-                                      border: "1px solid #ccc",
-                                      cursor: "pointer",
-                                    }}
-                                  >
-                                    
-                                  </button>
-                                  <span style={{ margin: "0 10px" }}>
-                                    {item.quantity}
-                                  </span>
-                                  <button
-                                    onClick={() =>
-                                      handleQuantityChange(item.id, 1)
-                                    }
-                                    style={{
-                                      padding: "5px 10px",
-                                      marginLeft: "5px",
-                                      border: "1px solid #ccc",
-                                      cursor: "pointer",
-                                    }}
-                                  >
-                                    +
-                                  </button>
-                                </div>
-                              </div>
+                              >
+                                -
+                              </button>
+                              <span style={{ margin: "0 10px" }}>{item.quantity}</span>
+                              <button
+                                onClick={() => handleQuantityChange(item._id, 1)}
+                                style={{
+                                  padding: "5px 10px",
+                                  marginLeft: "5px",
+                                  border: "1px solid #ccc",
+                                  cursor: "pointer",
+                                }}
+                              >
+                                +
+                              </button>
                             </div>
-                            <button
-                              className="btn btn-outline-success"
-                              onClick={handleOrderNow}
-                              style={{ marginTop: "20px" }}
-                            >
-                              Order Now
-                            </button>
-                            <button
-                              className="btn btn-outline-danger"
-                              onClick={() => handleRemoveItem(item.id)}
-                              style={{ marginTop: "20px", marginLeft: "40px" }}
-                            >
-                              Delete
-                            </button>
                           </div>
-                        );
-                      })}
-                    </div>
+                        </div>
+                        <button
+                          className="btn btn-outline-success"
+                          onClick={handleOrderNow}
+                          style={{ marginTop: "20px" }}
+                        >
+                          Order Now
+                        </button>
+                        <button
+                          className="btn btn-outline-danger"
+                          onClick={() => handleRemoveItem(item._id)}
+                          style={{ marginTop: "20px", marginLeft: "40px" }}
+                        >
+                          Delete
+                        </button>
+                      </div>
+                    ))}
                   </div>
                 )}
               </div>

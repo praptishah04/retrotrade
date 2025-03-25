@@ -22,7 +22,9 @@ export const SellerLogin = () => {
     setIsLoading(true);
     try {
       data.roleId = "67c65de982bd0ccca56c4df2";
-      const res = await axios.post("/user/login", data);
+      const res = await axios.post("http://localhost:4000/seller/login", data); // Use full backend URL
+
+      console.log("API Response:", res.data); // Debugging: Log the response
 
       if (res.status === 200) {
         toast.success('️✅ Logged in Successfully', {
@@ -38,14 +40,18 @@ export const SellerLogin = () => {
         });
 
         localStorage.setItem("id", res.data.data._id);
-        localStorage.setItem("role", res.data.data.roleId.name);
+        localStorage.setItem("roles", res.data.data.roleId.name);
 
-        if (res.data.data.roleId.name === "SELLER") {
+        console.log("Stored ID:", localStorage.getItem("id")); // Debugging: Log stored ID
+        console.log("Stored Role:", localStorage.getItem("roles")); // Debugging: Log stored role
+
+
+        if (res.data.data.roleId?.name === "SELLER") {
           navigate("/sellerprofile");
         } else {
           toast.error("Invalid role", {
             position: "top-center",
-            autoClose: 2000,
+            autoClose: 900,
             hideProgressBar: false,
             closeOnClick: true,
             pauseOnHover: true,
@@ -59,7 +65,7 @@ export const SellerLogin = () => {
     } catch (error) {
       toast.error(error.response?.data?.message || "Login Failed", {
         position: "top-center",
-        autoClose: 2000,
+        autoClose: 900,
         hideProgressBar: false,
         closeOnClick: true,
         pauseOnHover: true,
