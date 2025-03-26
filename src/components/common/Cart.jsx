@@ -158,7 +158,7 @@ export const Cart = () => {
           navigate("/invoice");
         }, 3000);
       } else {
-        toast.warn("Order does not placed. Please try again.", {
+        toast.warn("Order  not placed. Please try again.", {
           position: "top-right",
           autoClose: 5000,
           hideProgressBar: false,
