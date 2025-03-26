@@ -26,6 +26,7 @@ import AboutUs from './components/common/AboutUs'
 import { BuyerLogin } from './components/common/BuyerLogin'
 import { SellerLogin } from './components/common/SellerLogin'
 import { ResetPassword } from './components/common/ResetPassword'
+import Cart from './components/common/Cart'
 
 
 
@@ -46,6 +47,7 @@ function App() {
           <Route path='/' element={<LandingPage/>}></Route>
           <Route path='/aboutus' element={<AboutUs/>}></Route>
           <Route path='/exploreitems' element={<ExploreItems/>}></Route>
+          <Route path='/cart' element={<Cart/>}></Route>
           <Route path='/buyerlogin' element={<BuyerLogin/>}></Route>
           <Route path='/sellerlogin' element={<SellerLogin/>}></Route>
           <Route path='/demo' element={<Demo/>}></Route>
