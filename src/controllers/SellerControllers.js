@@ -13,7 +13,7 @@ const addseller = async (req, res) => {
             return res.status(400).json({ message: "Email already exists." });
         }
 
-        // Fetch the "BUYER" role
+        // Fetch the "SELLER" role
         const sellerRole = await roleModel.findOne({ name: "SELLER" });
         console.log("Fetched Seller Role:", sellerRole);
         if (!sellerRole) {
@@ -23,7 +23,7 @@ const addseller = async (req, res) => {
         // Hash the password
         const hashedPassword = await bcrypt.hash(password, 10);
 
-        // Create buyer with roleId set to BUYER
+        // Create seller with roleId set to SELLER
         const sellerData = {
             firstname,
             lastname,
@@ -44,12 +44,12 @@ const addseller = async (req, res) => {
     }
 };
 
-// Buyer Login (Verify password)
+// seller  Login (Verify password)
 const loginSeller = async (req, res) => {
     try {
         const { email, password } = req.body;
 
-        // Find buyer by email
+        // Find seller by email
         const sellers = await sellerModel.findOne({ email }).populate("roleId");
         if (!sellers) {
             return res.status(404).json({ message: "Seller not found." });
