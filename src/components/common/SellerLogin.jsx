@@ -11,6 +11,7 @@ import { motion } from 'framer-motion';
 import loginimage from "../../assets/images/loginimage2.jpg"
 // import loginimage from "../../assets/images/loginimage3.avif"
 import '../../assets/landing/css/sellerlogin.css'; // Import the CSS file
+import axios from 'axios';
 
 export const SellerLogin = () => {
   const { register, handleSubmit, formState: { errors } } = useForm();
@@ -21,8 +22,8 @@ export const SellerLogin = () => {
   const submitHandler = async (data) => {
     setIsLoading(true);
     try {
-      data.roleId = "67c65de982bd0ccca56c4df2";
-      const res = await axios.post("http://localhost:4000/seller/login", data); // Use full backend URL
+      // data.roleId = "67e23529907acfb7882f2426";
+      const res = await axios.post("http://localhost:4000/seller/loginseller", data); // Use full backend URL
 
       console.log("API Response:", res.data); // Debugging: Log the response
 
@@ -47,7 +48,7 @@ export const SellerLogin = () => {
 
 
         if (res.data.data.roleId?.name === "SELLER") {
-          navigate("/sellerprofile");
+          navigate("/seller");
         } else {
           toast.error("Invalid role", {
             position: "top-center",
@@ -63,6 +64,7 @@ export const SellerLogin = () => {
         }
       }
     } catch (error) {
+      console.log(error)
       toast.error(error.response?.data?.message || "Login Failed", {
         position: "top-center",
         autoClose: 900,

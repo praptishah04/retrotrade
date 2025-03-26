@@ -127,7 +127,7 @@ const LandingPage = () => {
           <div className="row">
             <div className="col-md-6">
               <div className="img-box">
-                <img src={landingpage} alt="About Retrotrade" className="img-fluid" />
+                <img src={landingpage} loading="lazy"  alt="About Retrotrade" className="img-fluid" />
               </div>
             </div>
             <div className="col-md-5">

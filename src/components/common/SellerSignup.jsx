@@ -21,10 +21,22 @@ export const SellerSignup = () => {
 
   // Validation Schema
   const ValidationSchema = {
-    fullname: {
+    firstname: {
       required: {
         value: true,
-        message: 'Full Name is required*',
+        message: 'First Name is required*',
+      },
+    },
+    lastname: {
+      required: {
+        value: true,
+        message: 'Last Name is required*',
+      },
+    },
+    contactnumber: {
+      required: {
+        value: true,
+        message: 'Contact Number is required*',
       },
     },
     email: {
@@ -99,9 +111,9 @@ export const SellerSignup = () => {
     setIsLoading(true);
     try {
       data.roleId = '67c65de982bd0ccca56c4df2';
-      const res = await axios.post('/user/sellersignup', data);
+      const res = await axios.post('/seller/addseller', data);
 
-      if (res.status === 201) {
+      if (res.status === 200) {
         toast.success('️✅ Successfully Signed up as Seller!', {
           position: 'top-center',
           autoClose: 900,
@@ -151,7 +163,7 @@ export const SellerSignup = () => {
         <h1 style={{ fontSize: '2rem', marginBottom: '20px', color: '#333', textAlign: 'center' }}>Seller Signup</h1>
         <form onSubmit={handleSubmit(submitHandler)}>
           {/* Full Name */}
-          <div className="mb-3">
+          {/* <div className="mb-3">
             <label className="form-label">Full Name</label>
             <input
               type="text"
@@ -160,7 +172,41 @@ export const SellerSignup = () => {
               {...register('fullname', ValidationSchema.fullname)}
             />
             {errors.fullname && <div className="invalid-feedback">{errors.fullname.message}</div>}
+          </div> */}
+
+          <div className="mb-3">
+            <label className="form-label">First Name</label>
+            <input
+              type="text"
+              className={`form-control ${errors.firstname ? 'is-invalid' : ''}`}
+              placeholder="Enter your first name"
+              {...register('firstname', ValidationSchema.firstname)}
+            />
+            {errors.firstname && <div className="invalid-feedback">{errors.firstname.message}</div>}
           </div>
+
+          <div className="mb-3">
+            <label className="form-label">Last Name</label>
+            <input
+              type="text"
+              className={`form-control ${errors.lastname ? 'is-invalid' : ''}`}
+              placeholder="Enter your last name"
+              {...register('lastname', ValidationSchema.lastname)}
+            />
+            {errors.lastname && <div className="invalid-feedback">{errors.lastname.message}</div>}
+          </div>
+
+          <div className="mb-3">
+            <label className="form-label">Contact Number</label>
+            <input
+              type="text"
+              className={`form-control ${errors.contactnumber ? 'is-invalid' : ''}`}
+              placeholder="Enter your contact number"
+              {...register('contactnumber', ValidationSchema.contactnumber)}
+            />
+            {errors.contactnumber && <div className="invalid-feedback">{errors.contactnumber.message}</div>}
+          </div>
+
 
           {/* Email */}
           <div className="mb-3">
@@ -225,7 +271,7 @@ export const SellerSignup = () => {
           </div>
 
           {/* Business Type */}
-          <div className="mb-3">
+          {/* <div className="mb-3">
             <label className="form-label">Business Type</label>
             <select
               className={`form-select ${errors.businessType ? 'is-invalid' : ''}`}
@@ -238,10 +284,10 @@ export const SellerSignup = () => {
               <option value="Service Provider">Service Provider</option>
             </select>
             {errors.businessType && <div className="invalid-feedback">{errors.businessType.message}</div>}
-          </div>
+          </div> */}
 
           {/* Country/Region */}
-          <div className="mb-3">
+          {/* <div className="mb-3">
             <label className="form-label">Country/Region</label>
             <select
               className={`form-select ${errors.country ? 'is-invalid' : ''}`}
@@ -254,10 +300,10 @@ export const SellerSignup = () => {
               <option value="Australia">Australia</option>
             </select>
             {errors.country && <div className="invalid-feedback">{errors.country.message}</div>}
-          </div>
+          </div> */}
 
           {/* City/State */}
-          <div className="mb-3">
+          {/* <div className="mb-3">
             <label className="form-label">City/State</label>
             <select
               className={`form-select ${errors.city ? 'is-invalid' : ''}`}
@@ -270,10 +316,10 @@ export const SellerSignup = () => {
               <option value="Sydney">Sydney</option>
             </select>
             {errors.city && <div className="invalid-feedback">{errors.city.message}</div>}
-          </div>
+          </div> */}
 
           {/* Terms and Conditions */}
-          <div className="mb-3 form-check">
+          {/* <div className="mb-3 form-check">
             <input
               type="checkbox"
               className={`form-check-input ${errors.terms ? 'is-invalid' : ''}`}
@@ -281,7 +327,7 @@ export const SellerSignup = () => {
             />
             <label className="form-check-label">I agree to the terms and conditions</label>
             {errors.terms && <div className="invalid-feedback">{errors.terms.message}</div>}
-          </div>
+          </div> */}
 
           {/* Submit Button */}
           <button type="submit" className="btn btn-primary w-100 rounded-pill" disabled={isLoading}>

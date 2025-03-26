@@ -25,7 +25,8 @@ import  ExploreItems  from './components/common/ExploreItems'
 import AboutUs from './components/common/AboutUs'
 import { BuyerLogin } from './components/common/BuyerLogin'
 import { SellerLogin } from './components/common/SellerLogin'
-import  { ProductDetails } from './components/common/ProductDetails'
+import { ResetPassword } from './components/common/ResetPassword'
+
 
 
 
@@ -45,10 +46,10 @@ function App() {
           <Route path='/' element={<LandingPage/>}></Route>
           <Route path='/aboutus' element={<AboutUs/>}></Route>
           <Route path='/exploreitems' element={<ExploreItems/>}></Route>
-          <Route path='/productdetails/:id' element={<ProductDetails/>}></Route>
           <Route path='/buyerlogin' element={<BuyerLogin/>}></Route>
           <Route path='/sellerlogin' element={<SellerLogin/>}></Route>
           <Route path='/demo' element={<Demo/>}></Route>
+          <Route path ="/resetpassword/:token" element={<ResetPassword/>}></Route>
 
           <Route path='/buyersignup' element={<BuyerSignup/>}></Route>
           <Route path='/sellersignup' element={<SellerSignup/>}></Route>

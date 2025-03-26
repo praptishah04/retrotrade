@@ -23,10 +23,16 @@ export const BuyerSignup = () => {
 
   // Validation Schema
   const ValidationSchema = {
-    fullname: {
+    firstname: {
       required: {
         value: true,
-        message: 'Full Name is required*',
+        message: 'First Name is required*',
+      },
+    },
+    lastname: {
+      required: {
+        value: true,
+        message: 'Last Name is required*',
       },
     },
     email: {
@@ -39,14 +45,20 @@ export const BuyerSignup = () => {
         message: 'Invalid email address',
       },
     },
+    contactnumber: {
+      required: {
+        value: true,
+        message: 'contact number is required*',
+      },
+    },
     password: {
       required: {
         value: true,
         message: 'Password is required*',
       },
       minLength: {
-        value: 6,
-        message: 'Password must be at least 6 characters',
+        value: 8,
+        message: 'Password must be at least 8 characters',
       },
     },
     confirmPassword: {
@@ -95,9 +107,9 @@ export const BuyerSignup = () => {
     setIsLoading(true);
     try {
       data.roleId = '67c60a1481267c1168056a22';
-      const res = await axios.post('/user/buyersignup', data);
+      const res = await axios.post('/buyer/addbuyer', data);
 
-      if (res.status === 201) {
+      if (res.status === 20) {
         toast.success('️✅ Successfully Signed up as Buyer!', {
           position: 'top-center',
           autoClose: 900,
@@ -155,7 +167,7 @@ export const BuyerSignup = () => {
         <h1 style={{ fontSize: '2rem', marginBottom: '20px', color: '#333', textAlign: 'center' }}>Buyer Signup</h1>
         <form onSubmit={handleSubmit(submitHandler)}>
           {/* Full Name */}
-          <div className="mb-3">
+          {/* <div className="mb-3">
             <label className="form-label">Full Name</label>
             <input
               type="text"
@@ -164,7 +176,43 @@ export const BuyerSignup = () => {
               {...register('fullname', ValidationSchema.fullname)}
             />
             {errors.fullname && <div className="invalid-feedback">{errors.fullname.message}</div>}
+          </div> */}
+
+
+          <div className="mb-3">
+            <label className="form-label">First Name</label>
+            <input
+              type="text"
+              className={`form-control ${errors.firstname ? 'is-invalid' : ''}`}
+              placeholder="Enter your first name"
+              {...register('firstname', ValidationSchema.fullname)}
+            />
+            {errors.firstname && <div className="invalid-feedback">{errors.firstname.message}</div>}
           </div>
+
+          <div className="mb-3">
+            <label className="form-label">Last Name</label>
+            <input
+              type="text"
+              className={`form-control ${errors.lastname ? 'is-invalid' : ''}`}
+              placeholder="Enter your last name"
+              {...register('lastname', ValidationSchema.lastname)}
+            />
+            {errors.lastname && <div className="invalid-feedback">{errors.lastname.message}</div>}
+          </div>
+
+          <div className="mb-3">
+            <label className="form-label">Contact Number</label>
+            <input
+              type="text"
+              className={`form-control ${errors.contactnumber ? 'is-invalid' : ''}`}
+              placeholder="Enter your contact number"
+              {...register('contactnumber', ValidationSchema.contactnumber)}
+            />
+            {errors.contactnumber && <div className="invalid-feedback">{errors.contactnumber.message}</div>}
+          </div>
+
+
 
           {/* Email */}
           <div className="mb-3">
@@ -236,7 +284,7 @@ export const BuyerSignup = () => {
               {...register('country', ValidationSchema.country)}
             >
               <option value="">Select Country/Region</option>
-              <option value="USA">USA</option>
+              <option value="India">India</option>
               <option value="Canada">Canada</option>
               <option value="UK">UK</option>
               <option value="Australia">Australia</option>
@@ -252,7 +300,7 @@ export const BuyerSignup = () => {
               {...register('city', ValidationSchema.city)}
             >
               <option value="">Select City/State</option>
-              <option value="New York">New York</option>
+              <option value="Ahmedabad">Ahmedabad</option>
               <option value="Los Angeles">Los Angeles</option>
               <option value="London">London</option>
               <option value="Sydney">Sydney</option>

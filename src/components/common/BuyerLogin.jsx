@@ -47,7 +47,7 @@ export const BuyerLogin = () => {
 
         // Navigate based on role
         if (res.data.data.roleId?.name === "BUYER") {
-          navigate("/productdetails/:id");
+          navigate("/exploreitems");
         } else {
           toast.error("Invalid role", {
             position: "top-center",
@@ -173,7 +173,7 @@ export const BuyerLogin = () => {
           </motion.button>
 
           <div className="forgot-password">
-            <Link to="/forgot-password">Forgot Password?</Link>
+            <Link to="/resetpassword">Forgot Password?</Link>
           </div>
 
           <div className="social-login">
