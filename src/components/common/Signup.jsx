@@ -90,9 +90,9 @@ export const Signup = () => {
           </button>
         </div>
 
-        <p className="text-center mt-3" style={{ color: "#555" }}>
+        {/* <p className="text-center mt-3" style={{ color: "#555" }}>
           Already have an account? <Link to="/login" style={{ textDecoration: "none", color: "#007bff" }}>Login</Link>
-        </p>
+        </p> */}
       </div>
     </div>
   );
