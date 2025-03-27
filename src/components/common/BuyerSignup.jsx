@@ -109,7 +109,7 @@ export const BuyerSignup = () => {
       data.roleId = '67c60a1481267c1168056a22';
       const res = await axios.post('/buyer/addbuyer', data);
 
-      if (res.status === 20) {
+      if (res.status === 200) {
         toast.success('️✅ Successfully Signed up as Buyer!', {
           position: 'top-center',
           autoClose: 900,
@@ -277,7 +277,7 @@ export const BuyerSignup = () => {
           </div>
 
           {/* Country/Region */}
-          <div className="mb-3">
+          {/* <div className="mb-3">
             <label className="form-label">Country/Region</label>
             <select
               className={`form-select ${errors.country ? 'is-invalid' : ''}`}
@@ -290,10 +290,10 @@ export const BuyerSignup = () => {
               <option value="Australia">Australia</option>
             </select>
             {errors.country && <div className="invalid-feedback">{errors.country.message}</div>}
-          </div>
+          </div> */}
 
           {/* City/State */}
-          <div className="mb-3">
+          {/* <div className="mb-3">
             <label className="form-label">City/State</label>
             <select
               className={`form-select ${errors.city ? 'is-invalid' : ''}`}
@@ -306,7 +306,7 @@ export const BuyerSignup = () => {
               <option value="Sydney">Sydney</option>
             </select>
             {errors.city && <div className="invalid-feedback">{errors.city.message}</div>}
-          </div>
+          </div> */}
 
           {/* Terms and Conditions */}
           <div className="mb-3 form-check">
@@ -333,7 +333,7 @@ export const BuyerSignup = () => {
         {/* Link to Login Page */}
         <p className="text-center mt-3">
           Already have an account?{' '}
-          <Link to="/login" style={{ textDecoration: 'none', color: '#007bff' }}>
+          <Link to="/buyerlogin" style={{ textDecoration: 'none', color: '#007bff' }}>
             Login
           </Link>
         </p>

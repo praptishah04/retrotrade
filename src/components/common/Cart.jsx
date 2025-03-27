@@ -80,14 +80,13 @@ export const Cart = () => {
         if (item._id === cartItemId) {
           return {
             ...item,
-            quantity: Math.max(1, (item.quantity || 0) + amount),
+            quantity: Math.max(1, Number(item.quantity || 0) + amount), // Convert to number
           };
         }
         return item;
       })
     );
   };
-
   const handleRemoveItem = async (cartItemId) => {
     try {
       if (!cartItemId) {
@@ -142,7 +141,7 @@ export const Cart = () => {
 
       console.log("Order placed:", orderResponse.data);
 
-      if (orderResponse.status === 201) {
+      if (orderResponse.status === 200) {
         toast.success("Order placed successfully!", {
           position: "top-right",
           autoClose: 5000,
@@ -155,8 +154,9 @@ export const Cart = () => {
           transition: Bounce,
         });
         setTimeout(() => {
-          navigate("/invoice");
-        }, 3000);
+          navigate("/invoice", { state: { cartItems: cart } });
+        }, 4000);
+        
       } else {
         toast.warn("Order  not placed. Please try again.", {
           position: "top-right",
@@ -261,7 +261,7 @@ export const Cart = () => {
                             }}
                           >
                             <img
-                              src={c.productId?.image}
+                              src={c.productId?.imageURL}
                               alt={c.productId?.name}
                               style={{
                                 width: "150px",
@@ -274,7 +274,7 @@ export const Cart = () => {
                                 {c.productId?.productName}
                               </h3>
                               <p style={{ fontSize: "1.3rem" }}>
-                                Price: {c.productPrice}
+                                Price: {c.productprice}
                               </p>
                               <p>{c.productId?.description}</p>
                               <div>

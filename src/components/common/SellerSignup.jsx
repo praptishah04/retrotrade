@@ -338,7 +338,7 @@ export const SellerSignup = () => {
         {/* Link to Login Page */}
         <p className="text-center mt-3">
           Already have an account?{' '}
-          <Link to="/login" style={{ textDecoration: 'none', color: '#007bff' }}>
+          <Link to="/sellerlogin" style={{ textDecoration: 'none', color: '#007bff' }}>
             Login
           </Link>
         </p>

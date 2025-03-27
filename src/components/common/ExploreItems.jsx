@@ -53,6 +53,7 @@ const ExploreItems = () => {
       alert('Invalid product price.');
       return;
     }
+    alert(price)
 
     await axios.post('/cart/addcart', {
       buyerId: buyerId,

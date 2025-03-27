@@ -27,6 +27,7 @@ import { BuyerLogin } from './components/common/BuyerLogin'
 import { SellerLogin } from './components/common/SellerLogin'
 import { ResetPassword } from './components/common/ResetPassword'
 import Cart from './components/common/Cart'
+import Invoice from './components/common/Invoice'
 
 
 
@@ -48,6 +49,7 @@ function App() {
           <Route path='/aboutus' element={<AboutUs/>}></Route>
           <Route path='/exploreitems' element={<ExploreItems/>}></Route>
           <Route path='/cart' element={<Cart/>}></Route>
+          <Route path='/invoice' element={<Invoice/>}></Route>
           <Route path='/buyerlogin' element={<BuyerLogin/>}></Route>
           <Route path='/sellerlogin' element={<SellerLogin/>}></Route>
           <Route path='/demo' element={<Demo/>}></Route>
@@ -56,9 +58,13 @@ function App() {
           <Route path='/buyersignup' element={<BuyerSignup/>}></Route>
           <Route path='/sellersignup' element={<SellerSignup/>}></Route>
           <Route path='/adminsignup' element={<AdminSignup/>}></Route>
+
+
           <Route path='/user' element={<UserSidebar/>}>
             <Route path='profile' element={<UserProfile/>}></Route>
           </Route>
+
+          
           <Route path='/seller' element={<SellerSidebar/>}>
               <Route path='addproduct' element={<AddProduct/>}></Route>
               <Route path='viewproduct' element={<ViewProducts/>}></Route>
