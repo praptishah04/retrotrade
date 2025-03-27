@@ -1,7 +1,7 @@
 const mongoose = require("mongoose")
 const Schema = mongoose.Schema
 
-const cartSchema = new Schema({
+const wishlistSchema = new Schema({
     buyerId:{
         type:Schema.Types.ObjectId,
         ref:"Buyer"
@@ -10,15 +10,10 @@ const cartSchema = new Schema({
         type:Schema.Types.ObjectId,
         ref:"Product"
     },
-    quantity:{
-        type:String,
-        // default:"1"
-    },
-    productprice:{
-        type:String,
-        // default:true
-        required:true
+    added_date: {
+        type: Date,
+        default: Date.now
     }
 })
 
-module.exports= mongoose.model("cart",cartSchema)
+module.exports= mongoose.model("wishlist",wishlistSchema)

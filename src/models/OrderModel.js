@@ -2,9 +2,9 @@ const mongoose = require("mongoose")
 const Schema = mongoose.Schema
 
 const orderSchema = new Schema({
-    cartId:{
+    buyerId:{
         type:Schema.Types.ObjectId,
-        ref:"cart"
+        ref:"Buyer"
     },
     orderstatus:{
         enum:['Pending' , 'Processing' , 'Shipped' , 'Delivered' , 'Cancelled' , 'Refunded'],

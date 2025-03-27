@@ -14,6 +14,7 @@ const cartModel = require("../models/CartModel");
 const addCart = async (req, res) => {
   try {
     const { buyerId, productId, quantity, productPrice } = req.body;
+    // console.log(productPrice)
 
     // Check if the product is already in the cart for this buyer
     const existingCartItem = await cartModel.findOne({
@@ -35,7 +36,7 @@ const addCart = async (req, res) => {
         buyerId: buyerId,
         productId: productId,
         quantity: quantity,
-        productPrice: productPrice,
+        productprice: productPrice,
       });
       res.status(201).json({
         message: "Cart added successfully",
@@ -43,6 +44,7 @@ const addCart = async (req, res) => {
       });
     }
   } catch (err) {
+    console.log(err)
     res.status(500).json({ message: err.message });
   }
 };
