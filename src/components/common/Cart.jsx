@@ -186,7 +186,7 @@ export const Cart = () => {
     }
   };
   const closeModal = () => {
-    navigate("/homepage");
+    navigate("/exploreitems");
   };
 
   return (
