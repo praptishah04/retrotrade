@@ -123,30 +123,50 @@ export const SellerLogin = () => {
             {errors.email && <div className="invalid-feedback">{errors.email.message}</div>}
           </div>
 
-          <div className="form-group password-group">
-            <label htmlFor="password">Password</label>
-            <input
-              type={showPassword ? "text" : "password"}
-              className={`form-control ${errors.password ? 'is-invalid' : ''}`}
-              placeholder="Enter password"
-              {...register("password", {
-                required: "Password is required",
-                minLength: {
-                  value: 8,
-                  message: "Password must be at least 8 characters long",
-                },
-              })}
-            />
-            <span
-              className="password-toggle"
-              onClick={() => setShowPassword(!showPassword)}
-              aria-label={showPassword ? "Hide password" : "Show password"}
-            >
-              <FontAwesomeIcon icon={showPassword ? faEyeSlash : faEye} />
-            </span>
-            {errors.password && <div className="invalid-feedback">{errors.password.message}</div>}
-          </div>
-
+          <div className="form-group" style={{ 
+  position: 'relative',
+  marginBottom: '1rem'
+}}>
+  <label htmlFor="password">Password</label>
+  <div style={{ position: 'relative' }}>
+    <input
+      type={showPassword ? "text" : "password"}
+      className={`form-control ${errors.password ? 'is-invalid' : ''}`}
+      placeholder="Enter password"
+      style={{
+        paddingRight: '40px', // Make room for the icon
+        width: '100%' // Ensure full width
+      }}
+      {...register("password", {
+        required: "Password is required",
+        minLength: {
+          value: 8,
+          message: "Password must be at least 8 characters long",
+        },
+      })}
+    />
+    <button
+      type="button"
+      onClick={() => setShowPassword(!showPassword)}
+      aria-label={showPassword ? "Hide password" : "Show password"}
+      style={{
+        position: 'absolute',
+        right: '10px',
+        top: '50%',
+        transform: 'translateY(-50%)',
+        background: 'none',
+        border: 'none',
+        cursor: 'pointer',
+        padding: '0',
+        color: '#6c757d',
+        outline: 'none'
+      }}
+    >
+      <FontAwesomeIcon icon={showPassword ? faEyeSlash : faEye} />
+    </button>
+  </div>
+  {errors.password && <div className="invalid-feedback">{errors.password.message}</div>}
+</div>
           <div className="form-group remember-me">
             <input
               type="checkbox"

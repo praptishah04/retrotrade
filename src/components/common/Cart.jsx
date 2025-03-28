@@ -124,18 +124,19 @@ export const Cart = () => {
       const orderItems = cart.map((item) => ({
         productId: item.productId._id,
         quantity: item.quantity,
-        productPrice: item.productPrice,
+        productprice: item.productPrice,
       }));
-
       const totalOrder = cart.reduce(
         (total, item) => total + item.productPrice * item.quantity,
         0
       );
+      const buyerId=localStorage.getItem("id")
 
       const orderResponse = await axios.post("/order/addorder", {
-        cartId: fetchedCartId,
-        orderStatus: "Pending",
-        totalOrder: totalOrder,
+        // cartId: fetchedCartId,
+        buyerId:buyerId,
+      
+        totalorder: totalOrder,
         orderItems: orderItems, // Send the orderItems array
       });
 

@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import axios from 'axios';
 
 const Invoice = () => {
     const { orderId } = useParams();
@@ -9,37 +8,40 @@ const Invoice = () => {
     const [error, setError] = useState('');
 
     useEffect(() => {
-    const fetchOrder = async () => {
-        try {
-            const response = await axios.get('/api/getallorder');
-            
-            if (!response.data || !response.data.data) {
-                throw new Error('Invalid response format');
-            }
-            
-            const foundOrder = response.data.data.find(order => order._id === orderId);
-            
-            if (!foundOrder) {
-                throw new Error(`Order ${orderId} not found`);
-            }
-            
-            setOrder(foundOrder);
-        } catch (err) {
-            console.error("Order fetch error:", err);
-            setError(err.response?.data?.message || err.message);
-        } finally {
-            setLoading(false);
-        }
-    };
+        const fetchOrder = async () => {
+            try {
+                const response = await fetch("http://localhost:4000/order/getallorder");
+                const data = await response.json();
+                console.log("Order Fetch Response:", data); // Debugging
 
-    fetchOrder();
-}, [orderId]);
+                if (!data || !data.data || data.data.length === 0) {
+                    throw new Error("No orders found.");
+                }
+
+                // Find the order that matches the orderId from URL params
+                const selectedOrder = data.data.find(order => order._id === orderId);
+
+                if (!selectedOrder) {
+                    throw new Error(`Order with ID ${orderId} not found`);
+                }
+
+                setOrder(selectedOrder);
+            } catch (error) {
+                console.error("Order fetch error:", error);
+                setError(error.message);
+            } finally {
+                setLoading(false); // Ensure loading is set to false
+            }
+        };
+
+        fetchOrder();
+    }, [orderId]);
 
     if (loading) return <div>Loading invoice...</div>;
-    if (error) return <div>{error}</div>;
+    if (error) return <div className="text-red-600">Error: {error}</div>;
     if (!order) return <div>Order not found</div>;
 
-    // Format date for display
+    // Function to format date
     const formatDate = (dateString) => {
         const options = { year: 'numeric', month: 'long', day: 'numeric' };
         return new Date(dateString).toLocaleDateString(undefined, options);
