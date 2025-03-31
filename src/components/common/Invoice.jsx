@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useLocation, useParams } from 'react-router-dom';
 
 const Invoice = () => {
     const { orderId } = useParams();
@@ -7,25 +7,26 @@ const Invoice = () => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState('');
 
+    const orderData = useLocation().state.orderData.data
+   // console.log("orderdata",orderData.state?.orderData?.data)
+    //cartId,BuyerId --> call that api from order table populate 
+    
+
     useEffect(() => {
         const fetchOrder = async () => {
             try {
-                const response = await fetch("http://localhost:4000/order/getallorder");
+                //const response = await fetch("http://localhost:4000/order/buyer/"+orderData?.buyerId+"/"+orderData?.cartId);
+                const response = await fetch(`http://localhost:4000/order/buyer/${orderData.buyerId}/${orderData.cartId}`)
                 const data = await response.json();
                 console.log("Order Fetch Response:", data); // Debugging
 
-                if (!data || !data.data || data.data.length === 0) {
-                    throw new Error("No orders found.");
-                }
-
+               setOrder(data.data)
                 // Find the order that matches the orderId from URL params
-                const selectedOrder = data.data.find(order => order._id === orderId);
+                // const selectedOrder = data.data.find(order => order._id === orderId);
 
-                if (!selectedOrder) {
-                    throw new Error(`Order with ID ${orderId} not found`);
-                }
+                
 
-                setOrder(selectedOrder);
+                // setOrder(selectedOrder);
             } catch (error) {
                 console.error("Order fetch error:", error);
                 setError(error.message);

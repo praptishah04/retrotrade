@@ -109,6 +109,7 @@ export const Cart = () => {
     console.log("handleOrderNow - isLoading:", isLoading);
     console.log("handleOrderNow - fetchedCartId:", fetchedCartId);
     console.log("handleOrderNow - cart:", cart);
+
     try {
       if (isLoading) {
         toast.warn("Please wait while the cart is loading.");
@@ -121,23 +122,31 @@ export const Cart = () => {
         return;
       }
 
+      // const totalorder = cart.reduce(
+      //   (total, item) => total + item.productprice * item.quantity,
+      //   0
+      // );
+      
+      const totalOrder = cart.reduce(
+        (total, item) => total + item.productprice * item.quantity,
+        0
+      );
       const orderItems = cart.map((item) => ({
         productId: item.productId._id,
         quantity: item.quantity,
-        productprice: item.productPrice,
+        productprice: item.productprice,
+         totalorder:totalOrder
       }));
-      const totalOrder = cart.reduce(
-        (total, item) => total + item.productPrice * item.quantity,
-        0
-      );
+     
       const buyerId=localStorage.getItem("id")
 
       const orderResponse = await axios.post("/order/addorder", {
         // cartId: fetchedCartId,
         buyerId:buyerId,
-      
+        
         totalorder: totalOrder,
-        orderItems: orderItems, // Send the orderItems array
+        //orderItems: orderItems, // Send the orderItems array
+        cartId:cart[0]?._id
       });
 
       console.log("Order placed:", orderResponse.data);
@@ -155,7 +164,7 @@ export const Cart = () => {
           transition: Bounce,
         });
         setTimeout(() => {
-          navigate("/invoice", { state: { cartItems: cart } });
+          navigate("/invoice", { state: { orderData: orderResponse.data } });
         }, 4000);
         
       } else {
@@ -172,6 +181,7 @@ export const Cart = () => {
         });
       }
     } catch (error) {
+      console.log(error)
       toast.error("An error occurred during ordering the product.", {
         position: "top-right",
         autoClose: 5000,
