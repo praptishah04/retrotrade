@@ -13,7 +13,7 @@ const cartModel = require("../models/CartModel");
 // };
 const addCart = async (req, res) => {
   try {
-    const { buyerId, productId, quantity, productPrice } = req.body;
+    const { buyerId, productId, quantity, productprice } = req.body;
     // console.log(productPrice)
 
     // Check if the product is already in the cart for this buyer

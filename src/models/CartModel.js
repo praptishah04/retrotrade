@@ -11,7 +11,7 @@ const cartSchema = new Schema({
         ref:"Product"
     },
     quantity:{
-        type:String,
+        type:Number,
         // default:"1"
     },
     productprice:{

@@ -26,7 +26,8 @@ const orderSchema = new Schema({
     orderdate: {  
         type: Date,
         default: Date.now  // Automatically sets the timestamp when a new document is created
-    }
+    },
+    
 })
 
 module.exports= mongoose.model("order",orderSchema)
