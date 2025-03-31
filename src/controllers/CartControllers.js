@@ -36,7 +36,7 @@ const addCart = async (req, res) => {
         buyerId: buyerId,
         productId: productId,
         quantity: quantity,
-        productprice: productPrice,
+        productprice: productprice,
       });
       res.status(201).json({
         message: "Cart added successfully",
