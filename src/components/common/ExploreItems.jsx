@@ -58,7 +58,7 @@ const ExploreItems = () => {
     await axios.post('/cart/addcart', {
       buyerId: buyerId,
       productId: product._id,
-      productPrice: price,
+      productprice: price,
       quantity: 1,
     });
 

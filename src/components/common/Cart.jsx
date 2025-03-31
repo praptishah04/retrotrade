@@ -154,7 +154,7 @@ export const Cart = () => {
       if (orderResponse.status === 200) {
         toast.success("Order placed successfully!", {
           position: "top-right",
-          autoClose: 5000,
+          autoClose: 800,
           hideProgressBar: false,
           closeOnClick: false,
           pauseOnHover: true,

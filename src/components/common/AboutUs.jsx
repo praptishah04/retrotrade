@@ -1,7 +1,11 @@
 import React from 'react';
+import { useEffect } from 'react';
 import '../../assets/landing/aboutus.css'; // CSS file for styling
 
 const AboutUs = () => {
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
   return (
     <div className="about-us-container">
       <div className="about-us-header">
