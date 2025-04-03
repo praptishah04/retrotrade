@@ -40,7 +40,7 @@ function App() {
 
   return (
 
-    <body class="layout-fixed sidebar-expand-lg bg-body-tertiary app-loaded sidebar-open">
+    <div class="layout-fixed sidebar-expand-lg bg-body-tertiary app-loaded sidebar-open">
       <div class="app-wrapper">
         <Routes>
           <Route path='/login' element={<Login/>}></Route>
@@ -74,7 +74,7 @@ function App() {
           <Route path='/adminprofile' element={<AdminProfile/>}></Route> */}
         </Routes>
       </div>
-    </body>
+    </div>
   
   )
 }

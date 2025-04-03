@@ -135,21 +135,27 @@ export const Cart = () => {
         productId: item.productId._id,
         quantity: item.quantity,
         productprice: item.productprice,
-         totalorder:totalOrder
+        totalorder:totalOrder,
+        buyerId:localStorage.getItem("id"),
+        status:"pending",
+        cartId:item._id
       }));
+
+      console.log("order items.........................",orderItems)
      
       const buyerId=localStorage.getItem("id")
 
-      const orderResponse = await axios.post("/order/addorder", {
-        // cartId: fetchedCartId,
-        buyerId:buyerId,
+      // const orderResponse = await axios.post("/order/addorder", {
+      //   // cartId: fetchedCartId,
+      //   buyerId:buyerId,
         
-        totalorder: totalOrder,
-        //orderItems: orderItems, // Send the orderItems array
-        cartId:cart[0]?._id
-      });
+      //   totalorder: totalOrder,
+      //   //orderItems: orderItems, // Send the orderItems array
+      //   cartId:cart[0]?._id
+      // });
+      const orderResponse = await axios.post("/order/addorder",orderItems)
 
-      console.log("Order placed:", orderResponse.data);
+      console.log("Order placed:**********************", orderResponse.data.data[0]);
 
       if (orderResponse.status === 200) {
         toast.success("Order placed successfully!", {
@@ -164,7 +170,7 @@ export const Cart = () => {
           transition: Bounce,
         });
         setTimeout(() => {
-          navigate("/invoice", { state: { orderData: orderResponse.data } });
+          navigate("/invoice", { state: { orderData: orderResponse.data.data[0] } });
         }, 4000);
         
       } else {

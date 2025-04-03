@@ -3,7 +3,7 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import '../../assets/exploreitems.css';
 import { FaSearch, FaShoppingCart, FaTimes, FaStar, FaRegStar, FaHeart, FaRegHeart } from 'react-icons/fa';
-import { IoIosArrowForward } from 'react-icons/io';
+// import { IoIosArrowForward } from 'react-icons/io';
 
 const ExploreItems = () => {
   const [products, setProducts] = useState([]);
@@ -110,9 +110,9 @@ const ExploreItems = () => {
         <div className="hero-content">
           <h1>Discover Amazing Products</h1>
           <p>Explore our curated collection of high-quality items for every need</p>
-          <div className="hero-cta">
+          {/* <div className="hero-cta">
             <button className="cta-button">Shop Now <IoIosArrowForward /></button>
-          </div>
+          </div> */}
         </div>
       </div>
 
