@@ -5,7 +5,8 @@ import "../../assets/landing/css/responsive.css";
 import "../../assets/landingpage.css";
 import landingpage from "../../assets/images/landingpage_image.avif";
 import landingpage2 from "../../assets/images/landingpage2.jpg";
-import retrotradeLogo from "../../assets/images/retrotrade_logo.jpeg"
+import logo from "../../assets/images/logo-png.png"
+// import retrotradeLogo from "../../assets/images/retrotrade_logo.jpeg"
 // import image from "../../assets/images/image.jpg";
 import { Link } from "react-router-dom";
 // import { Carousel } from "react-bootstrap";
@@ -26,7 +27,7 @@ const LandingPage = () => {
         <div className="container-fluid">
           <nav className="navbar navbar-expand-lg custom_nav-container">
             <Link className="navbar-brand" to="/">
-              <img src={retrotradeLogo} alt="Retrotrade Logo" height="50"  />
+              <img src={logo} alt="Retrotrade Logo" height="100"  />
               <span>Retrotrade</span>
             </Link>
             <button
