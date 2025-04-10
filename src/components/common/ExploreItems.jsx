@@ -64,6 +64,7 @@ const ExploreItems = () => {
         
         // Use categories from categories endpoint if available, otherwise fallback to product categories
         const categoriesFromAPI = categoriesResponse.data.data.map(c => c.name);
+        console.log("Categories from API:", categoriesFromAPI); // ✅ Debug here
         if (categoriesFromAPI.length > 0) {
           setCategories(categoriesFromAPI);
         } else {
@@ -317,7 +318,7 @@ const goToPage = (page) => {
       <div className="results-header">
         <h2>Featured Products</h2>
         <div className="results-count">
-          {filteredProducts.length} {filteredProducts.length === 1 ? 'item' : 'items'} found
+          {/* {filteredProducts.length} {filteredProducts.length === 1 ? 'item' : 'items'} found */}
           {selectedCategory && ` in ${selectedCategory}`}
         </div>
       </div>
@@ -458,7 +459,8 @@ const goToPage = (page) => {
                 className="modal-add-to-cart"
                 onClick={() => handleAddToCart(selectedProduct)}
               >
-                <FaShoppingCart /> Add to Cart
+                Add To Cart
+                {/* <FaShoppingCart /> Add to Cart */}
               </button>
             </div>
           </div>
