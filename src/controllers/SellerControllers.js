@@ -51,12 +51,14 @@ const loginSeller = async (req, res) => {
 
         // Find seller by email
         const sellers = await sellerModel.findOne({ email }).populate("roleId");
+        console.log(sellers)
         if (!sellers) {
             return res.status(404).json({ message: "Seller not found." });
         }
 
         // Compare passwords
         const isPasswordValid = await bcrypt.compare(password, sellers.password);
+        console.log(isPasswordValid)
         if (!isPasswordValid) {
             return res.status(401).json({ message: "Invalid credentials." });
         }

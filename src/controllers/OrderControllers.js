@@ -10,7 +10,8 @@ const addorder = async (req, res) => {
         //     return res.status(400).json({ message: "Missing required fields", receivedData: req.body });
         // }
 
-        const order = await orderModel.create(req.body);
+        const order = await orderModel.insertMany(req.body);
+        console.log("order....",order)
         res.status(200).json({ message: "Order added successfully", data: order });
 
     } catch (error) {
@@ -36,10 +37,10 @@ const getAllOrder = async(req,res)=>{
 
 const getOrderByBuyerId = async (req, res) => {
     const buyerId = req.params.buyerId;
-    const cartId = req.params.cartId;
+  //  const cartId = req.params.cartId;
 
   try {
-    const foundOrder = await orderModel.find({buyerId:buyerId,cartId:cartId})
+    const foundOrder = await orderModel.find({buyerId:buyerId})
       .populate("buyerId")
       .populate({path:"cartId",populate:{path:"productId"}});
 

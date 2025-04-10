@@ -152,6 +152,28 @@ const updateCart = async (req, res) => {
   }
 };
 
+const getCartByCartId = async (req, res) => {
+  try {
+    const foundCart = await cartModel
+      .find({ _id: req.params.cartId })
+      .populate("buyerId")
+      .populate("productId");
+
+    if (!foundCart || foundCart.length === 0) {
+      return res.status(404).json({ message: "Cart not found" });
+    }
+
+    res.json({
+      message: "Cart Fetched",
+      data: foundCart,
+    });
+  } catch (err) {
+    res.status(500).json({
+      message: err.message,
+    });
+  }
+};
+
 module.exports = {
   addCart,
   getAllCart,
@@ -159,5 +181,5 @@ module.exports = {
   getCartById,
   getCartByBuyerId,
   updateCart,
-  deleteCartItem,
+  deleteCartItem,getCartByCartId
 };

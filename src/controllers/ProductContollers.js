@@ -50,9 +50,9 @@ const getproduct = async(req,res)=>{
 const getAllProductsByUserId = async (req, res) => {
   
     try {
-      const products = await productModel
-        .find({userId:req.params.userId})
-        .populate("categoryId subcategoryId sellerId userId");
+        const products = await productModel.find({ sellerId: req.params.sellerId })
+        .populate("categoryId subcategoryId sellerId");
+        console.log("....................",products.length)
       if (products.length === 0) {
         res.status(404).json({ message: "No products found" });
       } else {
@@ -74,11 +74,13 @@ const addProductWithFile = async(req,res)=>{
                 message:err.message,
             })
         }else{
-            const cloudinaryResponse = await cloudinaryUtil.uploadFileToCloudinary(req.file)
+            console.log(req.file)
+            const cloudinaryResponse = await cloudinaryUtil.uploadFileToCloudinary(req?.file)
             console.log(cloudinaryResponse)
             console.log(req.body)
 
             req.body.imageURL = cloudinaryResponse.secure_url
+            
             const product= await productModel.create(req.body)
 
             res.status(200).json({

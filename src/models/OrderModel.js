@@ -19,9 +19,13 @@ const orderSchema = new Schema({
         enum:['Pending' , 'Processing' , 'Shipped' , 'Delivered' , 'Cancelled' , 'Refunded'],
         default:"Pending"
     },
+    quantity: {
+        type: Number,
+        default: 1
+    },
     totalorder:{
         type: Number,
-        required:true,
+      //  required:true,
     },
     orderdate: {  
         type: Date,

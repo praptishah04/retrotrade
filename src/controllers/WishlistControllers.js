@@ -5,13 +5,12 @@ const addToWishlist = async (req, res) => {
     try {
         const { buyerId, productId } = req.body;
 
-        // Check if the item already exists in the wishlist
         const existingItem = await wishlistModel.findOne({ buyerId, productId });
         if (existingItem) {
             return res.status(400).json({ message: "Product already in wishlist" });
         }
 
-        const newWishlistItem = new Wishlist({ buyerId, productId });
+        const newWishlistItem = new wishlistModel({ buyerId, productId });
         await newWishlistItem.save();
 
         res.status(201).json({ message: "Product added to wishlist", wishlistItem: newWishlistItem });
@@ -49,3 +48,4 @@ const removeFromWishlist = async (req, res) => {
 };
 
 module.exports = { addToWishlist, getWishlistByBuyer, removeFromWishlist };
+ 
