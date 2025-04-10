@@ -171,7 +171,7 @@ export const Cart = () => {
         });
         setTimeout(() => {
           navigate("/invoice", { state: { orderData: orderResponse.data.data[0] } });
-        }, 4000);
+        }, 900);
         
       } else {
         toast.warn("Order  not placed. Please try again.", {

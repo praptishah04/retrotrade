@@ -32,10 +32,10 @@ export const ViewProducts = () => {
             <tbody>
                 {
                    products?.map((sc)=>{
-                    return<tr>
-                        <td>{sc.ProductsName}</td>
+                    return<tr key={sc._id}>
+                        <td>{sc.name}</td>
                         <td>
-                            <img  style ={{height:100,width:100}}src={sc?.imageURL}></img>
+                            <img  style ={{height:100,width:100}}src={sc?.imageURL} alt={sc.name}></img>
                         </td>
                     </tr>
                    }) 

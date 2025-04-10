@@ -4,7 +4,7 @@ import viteLogo from '/vite.svg'
 import { UserSidebar } from './components/layouts/UserSidebar'
 // import './App.css'
 // import './assets/adminlte.css'
-// import './assets/adminlte.min.css'
+//  import './assets/adminlte.min.css'
 import { Route, Routes } from 'react-router-dom'
 import { UserProfile } from './components/user/UserProfile'
 import {Login} from './components/common/Login'
@@ -28,6 +28,7 @@ import { SellerLogin } from './components/common/SellerLogin'
 import { ResetPassword } from './components/common/ResetPassword'
 import Cart from './components/common/Cart'
 import Invoice from './components/common/Invoice'
+import Wishlist from './components/common/Wishlist'
 
 
 
@@ -48,6 +49,7 @@ function App() {
           <Route path='/' element={<LandingPage/>}></Route>
           <Route path='/aboutus' element={<AboutUs/>}></Route>
           <Route path='/exploreitems' element={<ExploreItems/>}></Route>
+          <Route path='/wishlist' element={<Wishlist/>}></Route>
           <Route path='/cart' element={<Cart/>}></Route>
           <Route path='/invoice' element={<Invoice/>}></Route>
           <Route path='/buyerlogin' element={<BuyerLogin/>}></Route>
@@ -67,7 +69,7 @@ function App() {
           
           <Route path='/seller' element={<SellerSidebar/>}>
               <Route path='addproduct' element={<AddProduct/>}></Route>
-              <Route path='viewproduct' element={<ViewProducts/>}></Route>
+              <Route path='viewproduct/:id' element={<ViewProducts/>}></Route>
           </Route>
           {/* <Route path='/buyerprofile' element={<BuyerProfile/>}></Route>
           <Route path='/sellerprofile' element={<SellerProfile/>}></Route>

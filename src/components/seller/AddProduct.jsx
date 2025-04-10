@@ -42,7 +42,9 @@ export const AddProduct = () => {
         formData.append("status",data.status);
         formData.append("image",data.image[0]);
         formData.append("subcategoryId",data.subcategoryId);
-        formData.append("sellerId",data.sellerId);
+        //formData.append("sellerId",data.sellerId);
+        formData.append("sellerId", sellerId); // from localStorage or login response
+
         formData.append("condition",data.condition);
         formData.append("listing_date",data.listing_date);
     
@@ -52,7 +54,7 @@ export const AddProduct = () => {
         console.log(res); //axios
         console.log(res.data); //api response
         //if else...
-        navigate("/seller/viewproduct")
+        navigate(`/seller/viewproduct/${sellerId}`)
     };
 
     return (
