@@ -47,6 +47,9 @@ app.use("/order",orderRoutes)
 const wishlistRoutes = require("./src/routes/WishlistRoutes")
 app.use("/wishlist",wishlistRoutes)
 
+const paymentRoutes = require("./src/routes/PaymentRoutes")
+app.use("/payment", paymentRoutes)
+
 
 mongoose.connect("mongodb://127.0.0.1:27017/25_node_internship").then(()=>{
     console.log("database connected....")
