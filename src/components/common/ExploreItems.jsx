@@ -486,7 +486,8 @@ const goToPage = (page) => {
                 <div className="spec-item">
                   <span className="spec-label">Availability:</span>
                   <span className="in-stock">
-                    In Stock ({selectedProduct.stock || 'N/A'} left)
+                    In Stock
+                    {/* In Stock ({selectedProduct.stock || 'N/A'} left) */}
                   </span>
                 </div>
               </div>
