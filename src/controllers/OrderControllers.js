@@ -59,7 +59,55 @@ const getOrderByBuyerId = async (req, res) => {
   }
 };
 
+const deleteOrder = async (req, res) => {
+  const orderId = req.params.orderId;
+
+  try {
+    const deletedOrder = await orderModel.findByIdAndDelete(orderId);
+
+    if (!deletedOrder) {
+      return res.status(404).json({ message: "Order not found" });
+    }
+
+    res.status(200).json({
+      message: "Order deleted successfully",
+      data: deletedOrder,
+    });
+  } catch (error) {
+    console.error("Error deleting order:", error);
+    res.status(500).json({
+      message: "Internal Server Error",
+      error: error.message,
+    });
+  }
+};
+
+const deleteOrdersByBuyerId = async (req, res) => {
+  const { buyerId } = req.params;
+
+  try {
+    // Delete all orders for the buyer
+    const deletedOrders = await orderModel.deleteMany({ buyerId: buyerId });
+
+    if (deletedOrders.deletedCount === 0) {
+      return res.status(404).json({ message: "No orders found for this buyer." });
+    }
+
+    res.status(200).json({
+      message: "All orders deleted successfully",
+      data: deletedOrders,
+    });
+  } catch (error) {
+    console.error("Error deleting orders:", error);
+    res.status(500).json({
+      message: "Internal Server Error",
+      error: error.message,
+    });
+  }
+};
+
+
 
 module.exports={
-    addorder,getAllOrder,getOrderByBuyerId
+    addorder,getAllOrder,getOrderByBuyerId,deleteOrder,deleteOrdersByBuyerId
 }

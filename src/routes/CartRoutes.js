@@ -10,6 +10,8 @@ routes.delete("/deletecartitem/:id", cartControllers.deleteCartItem);  // Add :i
 routes.get("/buyer/:buyerId", cartControllers.getCartByBuyerId);  // More RESTful path
 routes.put("/updatecart/:id", cartControllers.updateCart);
 routes.get("/cart/:cartId", cartControllers.getCartByCartId);
+routes.delete("/clearcart/:buyerId", cartControllers.clearCartByBuyerId);
+
 
 
 module.exports=routes

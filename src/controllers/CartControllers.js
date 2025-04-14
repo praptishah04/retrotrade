@@ -94,6 +94,26 @@ const deleteCartItem = async (req, res) => {
     });
   }
 };
+
+const clearCartByBuyerId = async (req, res) => {
+  try {
+    const { buyerId } = req.params;
+
+    const deletedItems = await cartModel.deleteMany({ buyerId });
+
+    if (deletedItems.deletedCount === 0) {
+      return res.status(404).json({ message: "No cart items found for this buyer" });
+    }
+
+    res.json({
+      message: "All cart items cleared for the buyer",
+      deletedCount: deletedItems.deletedCount
+    });
+  } catch (err) {
+    res.status(500).json({ message: "Error clearing cart", error: err });
+  }
+};
+
 const getCartById = async (req, res) => {
   try {
     const foundCart = await cartModel
@@ -113,10 +133,9 @@ const getCartById = async (req, res) => {
 };
 const getCartByBuyerId = async (req, res) => {
   try {
-    const foundCart = await cartModel
-      .find({ buyerId: req.params.buyerId })
-      .populate("buyerId")
-      .populate("productId");
+    const foundCart = await cartModel.find({ buyerId: req.params.buyerId })
+  .populate({ path: "buyerId", model: "Buyer" })
+  .populate({ path: "productId", model: "Product" });
 
     if (!foundCart) {
       return res.status(404).json({ message: "Cart not found" });
@@ -181,5 +200,5 @@ module.exports = {
   getCartById,
   getCartByBuyerId,
   updateCart,
-  deleteCartItem,getCartByCartId
+  deleteCartItem,getCartByCartId,clearCartByBuyerId
 };
