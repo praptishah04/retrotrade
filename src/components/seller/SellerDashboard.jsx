@@ -62,6 +62,22 @@ const SellerDashboard = () => {
         }
     };
 
+    // Delete product
+    const deleteProduct = async (productId) => {
+        if (window.confirm("Are you sure you want to delete this product?")) {
+            setIsLoading(true);
+            try {
+                await axios.delete(`/product/deleteproduct/${productId}`);
+                alert("Product deleted successfully!");
+                getAllMyProducts();
+            } catch (error) {
+                console.error("Error deleting product:", error);
+                alert(error.response?.data?.message || "Failed to delete product");
+            } finally {
+                setIsLoading(false);
+            }
+        }
+    };
     useEffect(() => {
         getCategory();
         if (activeComponent === 'viewProducts') {
@@ -325,7 +341,7 @@ const SellerDashboard = () => {
                                             fontWeight: 'bold',
                                             color: '#2c3e50',
                                             borderBottom: '2px solid #ddd',
-                                        }}>Status</th>
+                                        }}>Actions</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -352,11 +368,24 @@ const SellerDashboard = () => {
                                                 </td>
                                                 <td style={{ padding: '12px 15px', color: '#495057' }}>₹{product.price}</td>
                                                 <td style={{ padding: '12px 15px', color: '#495057' }}>
-                                                    <span style={product.status === 'active' ? 
-                                                        { color: 'green', fontWeight: 'bold' } : 
-                                                        { color: 'red', fontWeight: 'bold' }}>
-                                                        {product.status}
-                                                    </span>
+                                                    <button
+                                                        onClick={() => deleteProduct(product._id)}
+                                                        style={{
+                                                            padding: '6px 12px',
+                                                            backgroundColor: '#e74c3c',
+                                                            color: 'white',
+                                                            border: 'none',
+                                                            borderRadius: '4px',
+                                                            cursor: 'pointer',
+                                                            fontSize: '14px',
+                                                            transition: 'background-color 0.3s',
+                                                            opacity: isLoading ? 0.7 : 1,
+                                                            pointerEvents: isLoading ? 'none' : 'auto'
+                                                        }}
+                                                        disabled={isLoading}
+                                                    >
+                                                        Delete
+                                                    </button>
                                                 </td>
                                             </tr>
                                         ))
@@ -548,6 +577,9 @@ const SellerDashboard = () => {
                 );
 
             case 'viewSubcategories':
+                console.log("All Subcategories:", allSubcategories);
+                console.log("All Categories:", addedcategory);
+
                 return (
                     <div style={{ margin: '20px 0' }}>
                         <h2 style={{ fontSize: '24px', marginBottom: '15px', color: '#2c3e50' }}>Subcategories</h2>
@@ -587,7 +619,7 @@ const SellerDashboard = () => {
                                             }}>
                                                 <td style={{ padding: '12px 15px', color: '#495057' }}>{subcategory.name}</td>
                                                 <td style={{ padding: '12px 15px', color: '#495057' }}>
-                                                    {addedcategory.find(cat => cat._id === subcategory.categoryId)?.name}
+                                                    {addedcategory.find(cat => cat._id === subcategory?.categoryId)?.name}
                                                 </td>
                                             </tr>
                                         ))
