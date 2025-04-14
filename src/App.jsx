@@ -29,6 +29,8 @@ import { ResetPassword } from './components/common/ResetPassword'
 import Cart from './components/common/Cart'
 import Invoice from './components/common/Invoice'
 import Wishlist from './components/common/Wishlist'
+import SellerDashboard from './components/seller/SellerDashboard'
+import { AddCategory } from './components/seller/AddCategory'
 
 
 
@@ -67,8 +69,10 @@ function App() {
           </Route>
 
           
-          <Route path='/seller' element={<SellerSidebar/>}>
+          <Route path='/sellerdashboard' element={<SellerDashboard/>}>
+              {/* <Route path='sellerdashboard' element={<SellerDashboard/>}></Route> */}
               <Route path='addproduct' element={<AddProduct/>}></Route>
+              <Route path='addcategory' element={<AddCategory/>}></Route>
               <Route path='viewproduct/:id' element={<ViewProducts/>}></Route>
           </Route>
           {/* <Route path='/buyerprofile' element={<BuyerProfile/>}></Route>

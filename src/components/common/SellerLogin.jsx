@@ -48,7 +48,7 @@ export const SellerLogin = () => {
 
 
         if (res.data.data.roleId?.name === "SELLER") {
-          navigate("/seller");
+          navigate("/sellerdashboard");
         } else {
           toast.error("Invalid role", {
             position: "top-center",
