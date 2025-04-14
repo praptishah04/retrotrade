@@ -46,6 +46,24 @@ const getproduct = async(req,res)=>{
     }
 }
 
+const deleteproduct = async (req, res) => {
+  try {
+    const { productId } = req.params;    
+    const deletedProduct = await productModel.findByIdAndDelete(productId);
+    if (!deletedProduct) {
+      return res.status(404).json({ message: "Product not found" });
+    }
+    res.json({
+      message: "Product deleted successfully",
+      data: deletedProduct,
+    });
+  } catch (err) {
+    res.status(500).json({
+      message: err,
+    });
+  }
+};
+
 
 const getAllProductsByUserId = async (req, res) => {
   
@@ -93,5 +111,5 @@ const addProductWithFile = async(req,res)=>{
 
 
 module.exports={
-    addproduct,getproduct,addProductWithFile,getAllProductsByUserId
+    addproduct,getproduct,addProductWithFile,getAllProductsByUserId,deleteproduct
 }
