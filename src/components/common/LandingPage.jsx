@@ -212,27 +212,47 @@ const LandingPage = () => {
       </section>
 
       {/* Contact Us Section */}
-      <section className="contact_section" id="contactus" >
-        <div className="container">
-          <div className="heading_container">
-            <h2>Contact Us</h2>
-          </div>
+      {/* Contact Us Section */}
+<section className="contact_section" id="contactus">
+  <div className="container">
+    <div className="heading_container">
+      <h2>Contact Us</h2>
+    </div>
+    <div className="row align-items-center">
+      <div className="col-md-6">
+        <p>
+          Have questions or need assistance? Feel free to reach out to us. We're here to help!
+        </p>
+        <div className="contact-info">
           <p>
-            Have questions or need assistance? Feel free to reach out to us. We're here to help!
+            <strong>Email:</strong> retro.tradee@gmail.com
           </p>
-          <div className="contact-info">
-            <p>
-              <strong>Email:</strong> retro.tradee@gmail.com
-            </p>
-            <p>
-              <strong>Phone:</strong> +1 (123) 456-7890
-            </p>
-            <p>
-              <strong>Address:</strong> 123 Retro Lane, Vintage City, VC 12345
-            </p>
-          </div>
+          <p>
+            <strong>Phone:</strong> +1 (123) 456-7890
+          </p>
+          <p>
+            <strong>Address:</strong> 123 Retro Lane, Ahmedabad, Gujarat, India
+          </p>
         </div>
-      </section>
+      </div>
+      <div className="col-md-6">
+        <div className="map-responsive">
+          <iframe
+            title="Retrotrade Ahmedabad Location"
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3672.173967108693!2d72.57136241543338!3d23.02250592119312!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x395e84f3d5e6d4b7%3A0x2fc0e373017f8b8b!2sAhmedabad%2C%20Gujarat!5e0!3m2!1sen!2sin!4v1712801111111"
+            width="100%"
+            height="300"
+            frameBorder="0"
+            style={{ border: 0 }}
+            allowFullScreen=""
+            loading="lazy"
+          ></iframe>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
 
       {/* Footer Section */}
       <footer className="footer_section">

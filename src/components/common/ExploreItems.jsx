@@ -21,6 +21,12 @@ const ExploreItems = () => {
 
   const navigate = useNavigate();
 
+  const handleLogout = () => {
+    localStorage.clear();
+    navigate('/');
+    toast.success('Logged out successfully!');
+  };
+
   useEffect(() => {
     // axios.get('/product/getproduct')
     //   .then(response => {
@@ -59,6 +65,8 @@ const ExploreItems = () => {
           axios.get('/product/getproduct'),
           axios.get('/category/getcategory')
         ]);
+        console.log('Loaded products:', productsResponse.data.data);
+
         
         setProducts(productsResponse.data.data);
         
@@ -78,8 +86,10 @@ const ExploreItems = () => {
         if (userRole === 'BUYER' && buyerId) {
           axios.get(`/wishlist/${buyerId}`)
             .then(response => {
-              const wishlistProductIds = response.data.wishlist.map(item => item.productId._id);
-              setFavorites(new Set(wishlistProductIds));
+              const wishlistProductIds = response.data.wishlist
+  .filter(item => item.productId && item.productId._id)
+  .map(item => item.productId._id);
+
             })
             .catch(error => {
               console.error('Error fetching wishlist:', error);
@@ -203,14 +213,28 @@ const ExploreItems = () => {
   };
 
   const handleCategorySelect = (category) => {
-    setSelectedCategory(category === selectedCategory ? '' : category);
+    if (selectedCategory.toLowerCase() === category.toLowerCase()) {
+      setSelectedCategory('');
+    } else {
+      setSelectedCategory(category);
+    }
   };
+  
 
   const filteredProducts = products.filter(product => {
     const matchesSearch = product?.name?.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesCategory = !selectedCategory || product.category === selectedCategory;
+  
+    const productCategoryName =
+      product.categoryId?.name || product.category;
+  
+    const matchesCategory =
+      !selectedCategory ||
+      productCategoryName?.toLowerCase() === selectedCategory.toLowerCase();
+  
     return matchesSearch && matchesCategory;
   });
+  
+  
 
   const indexOfLastProduct = currentPage * productsPerPage;
 const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
@@ -272,6 +296,9 @@ const goToPage = (page) => {
             </div>
             <span>Cart</span>
           </button>
+          <button className="nav-link logout-btn" onClick={handleLogout}>
+    <span>Logout</span>
+  </button>
         </div>
       </nav>
 
@@ -292,27 +319,35 @@ const goToPage = (page) => {
         </div>
 
         {showFilters && (
-          <div className="filter-dropdown">
-            <h4>Categories</h4>
-            <div className="category-buttons">
-            <button
-              className={`category-btn ${selectedCategory === '' ? 'active' : ''}`}
-              onClick={() => setSelectedCategory('')}
-            >
-              All Categories
-            </button>
-              {categories.map(category => (
-                <button
-                  key={category}
-                  className={`category-btn ${selectedCategory === category ? 'active' : ''}`}
-                  onClick={() => handleCategorySelect(category)}
-                >
-                  {category || 'Uncategorized'}
-                </button>
-              ))}
-            </div>
-          </div>
-        )}
+  <div className="filter-dropdown">
+    <h4>Categories</h4>
+    <div className="category-buttons">
+      <button
+        className={`category-btn ${selectedCategory === '' ? 'active' : ''}`}
+        onClick={() => {
+          setSelectedCategory('');
+          setShowFilters(false); // ✅ Close filter after selecting
+        }}
+      >
+        All Categories
+      </button>
+
+      {categories.map(category => (
+        <button
+          key={category}
+          className={`category-btn ${selectedCategory === category ? 'active' : ''}`}
+          onClick={() => {
+            handleCategorySelect(category);
+            setShowFilters(false); // ✅ Close filter after selecting
+          }}
+        >
+          {category || 'Uncategorized'}
+        </button>
+      ))}
+    </div>
+  </div>
+)}
+
       </div>
 
       <div className="results-header">

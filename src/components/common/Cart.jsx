@@ -12,67 +12,57 @@ export const Cart = () => {
   const [cart, setCart] = useState([]);
   const [fetchedCartId, setFetchedCartId] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
-
   useEffect(() => {
     const fetchCartData = async () => {
       try {
-        setIsLoading(true);
+        const buyerId = localStorage.getItem("id");
+        console.log("Buyer ID from localStorage:", buyerId);
+  
         const cartResponse = await axios.get(
-          `/cart/buyer/${localStorage.getItem("id")}`
+          `http://localhost:4000/cart/buyer/${buyerId}`
         );
-        console.log("Cart data:", cartResponse.data);
-
+  
+        console.log("Full cart response:", cartResponse.data);
+  
         if (
           cartResponse.data &&
-          cartResponse.data.data &&
+          Array.isArray(cartResponse.data.data) &&
           cartResponse.data.data.length > 0
         ) {
-          const uniqueCart = cartResponse.data.data.reduce((acc, current) => {
-            const x = acc.find(
-              (item) => item.productId._id === current.productId._id
-            );
-            if (!x) {
-              return acc.concat([current]);
-            } else {
-              return acc;
-            }
+          const uniqueCart = cartResponse.data.data.reduce((acc, item) => {
+            const existing = acc.find((i) => i.productid === item.productid);
+            if (!existing) acc.push(item);
+            return acc;
           }, []);
+  
+          console.log("Unique cart items:", uniqueCart);
           setCart(uniqueCart);
-          setFetchedCartId(cartResponse.data.data[0]?.cartId);
-          console.log(
-            "Fetched Cart ID in useEffect:",
-            cartResponse.data.data[0]?.cartId
-          );
-          console.log("cartResponse.data.data array:", cartResponse.data.data);
+          if (cartResponse.data.data[0]?.cartId) {
+            setFetchedCartId(cartResponse.data.data[0].cartId);
+          }
         } else if (
           cartResponse.data &&
           cartResponse.data.data &&
           cartResponse.data.data.cartId
         ) {
-          setCart(uniqueCart);
+          // if response is a single object, wrap it in an array
+          setCart([cartResponse.data.data]);
           setFetchedCartId(cartResponse.data.data.cartId);
-          console.log(
-            "Fetched Cart ID in useEffect:",
-            cartResponse.data.data.cartId
-          );
         } else {
-          console.error("Cart data not found or invalid");
-          setCart(null);
-          setFetchedCartId(null);
+          console.warn("Cart data is empty or malformed:", cartResponse.data);
+          setCart([]);
         }
-      } catch (error) {
-        console.error("Error fetching cart data:", error);
-        setCart(null);
-        setFetchedCartId(null);
-      } finally {
+  
         setIsLoading(false);
-        console.log("isLoading after fetch:", false);
+      } catch (error) {
+        console.error("Error fetching cart:", error);
+        setIsLoading(false);
       }
     };
-
-
-   fetchCartData()
+  
+    fetchCartData();
   }, []);
+  
 
   const handleQuantityChange = (cartItemId, amount) => {
     setCart((prevCart) =>

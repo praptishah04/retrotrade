@@ -569,6 +569,15 @@ html, body {
   cursor: not-allowed;
 }
 
+.logout-btn {
+  color: #ff4d4d;
+  font-weight: bold;
+}
+.logout-btn:hover {
+  color: #cc0000;
+}
+
+
 
 /* Animations */
 @keyframes fadeIn {

@@ -92,9 +92,7 @@ const SellerDashboard = () => {
         try {
             await axios.post("/product/addWithFile", formData);
             alert("Product added successfully!");
-            // Change this line to navigate to the viewProducts component
             setActiveComponent('viewProducts');
-            // Also refresh the products list
             getAllMyProducts();
         } catch (error) {
             console.error("Error adding product:", error);
@@ -109,9 +107,9 @@ const SellerDashboard = () => {
         try {
             await axios.post("/category/addcategory", data);
             alert("Category added successfully!");
-            getCategory(); // Refresh categories list
-            reset(); // Reset form
-            setActiveComponent('viewCategories'); // Navigate to view
+            getCategory();
+            reset();
+            setActiveComponent('viewCategories');
         } catch (error) {
             console.error("Error adding category:", error);
             alert(error.response?.data?.message || "Failed to add category");
@@ -120,22 +118,28 @@ const SellerDashboard = () => {
         }
     };
 
-   const addSubcategoryHandler = async (data) => {
-    setIsLoading(true);
-    try {
-        const res = await axios.post("/subcategory/addsubcategory", data);
-        alert("Subcategory added successfully!");
-        setActiveComponent('viewSubcategories');
-        getAllSubcategories();
-        reset();
-    } catch (error) {
-        console.error("Error adding subcategory:", error);
-        // Show proper error message instead of [object Object]
-        alert(error.response?.data?.message || "Failed to add subcategory");
-    } finally {
-        setIsLoading(false);
-    }
-};
+    const addSubcategoryHandler = async (data) => {
+        setIsLoading(true);
+        try {
+            const res = await axios.post("/subcategory/addsubcategory", data);
+            alert("Subcategory added successfully!");
+            setActiveComponent('viewSubcategories');
+            getAllSubcategories();
+            reset();
+        } catch (error) {
+            console.error("Error adding subcategory:", error);
+            alert(error.response?.data?.message || "Failed to add subcategory");
+        } finally {
+            setIsLoading(false);
+        }
+    };
+
+    const handleLogout = () => {
+        localStorage.removeItem("token");
+        localStorage.removeItem("id");
+        localStorage.removeItem("role");
+        navigate("/sellerlogin");
+    };
 
     const renderComponent = () => {
         switch (activeComponent) {
@@ -618,116 +622,145 @@ const SellerDashboard = () => {
                 color: '#ecf0f1',
                 padding: '20px 0',
                 position: 'fixed',
-                height: '100vh'
+                height: '100vh',
+                display: 'flex',
+                flexDirection: 'column'
             }}>
-                <h2 style={{
-                    textAlign: 'center',
-                    marginBottom: '30px',
-                    color: '#f39c12',
-                    fontSize: '24px'
-                }}>Retro Trade</h2>
-                <h3 style={{
-                    padding: '0 20px',
-                    marginBottom: '15px',
-                    fontSize: '16px',
-                    color: '#bdc3c7',
-                }}>Seller Dashboard</h3>
-                <ul style={{
-                    listStyle: 'none',
-                    padding: 0,
-                    margin: 0,
+                <div>
+                    <h2 style={{
+                        textAlign: 'center',
+                        marginBottom: '30px',
+                        color: '#f39c12',
+                        fontSize: '24px'
+                    }}>Retro Trade</h2>
+                    <h3 style={{
+                        padding: '0 20px',
+                        marginBottom: '15px',
+                        fontSize: '16px',
+                        color: '#bdc3c7',
+                    }}>Seller Dashboard</h3>
+                    <ul style={{
+                        listStyle: 'none',
+                        padding: 0,
+                        margin: 0,
+                    }}>
+                        <li 
+                            style={activeComponent === 'addProduct' ? {
+                                padding: '12px 20px',
+                                cursor: 'pointer',
+                                backgroundColor: '#34495e',
+                                borderLeft: '4px solid #f39c12',
+                            } : {
+                                padding: '12px 20px',
+                                cursor: 'pointer',
+                                transition: 'background-color 0.3s',
+                            }}
+                            onClick={() => setActiveComponent('addProduct')}
+                        >
+                            Add Product
+                        </li>
+                        <li 
+                            style={activeComponent === 'viewProducts' ? {
+                                padding: '12px 20px',
+                                cursor: 'pointer',
+                                backgroundColor: '#34495e',
+                                borderLeft: '4px solid #f39c12',
+                            } : {
+                                padding: '12px 20px',
+                                cursor: 'pointer',
+                                transition: 'background-color 0.3s',
+                            }}
+                            onClick={() => setActiveComponent('viewProducts')}
+                        >
+                            View Products
+                        </li>
+                        <li 
+                            style={activeComponent === 'addCategory' ? {
+                                padding: '12px 20px',
+                                cursor: 'pointer',
+                                backgroundColor: '#34495e',
+                                borderLeft: '4px solid #f39c12',
+                            } : {
+                                padding: '12px 20px',
+                                cursor: 'pointer',
+                                transition: 'background-color 0.3s',
+                            }}
+                            onClick={() => setActiveComponent('addCategory')}
+                        >
+                            Add Category
+                        </li>
+                        <li 
+                            style={activeComponent === 'viewCategories' ? {
+                                padding: '12px 20px',
+                                cursor: 'pointer',
+                                backgroundColor: '#34495e',
+                                borderLeft: '4px solid #f39c12',
+                            } : {
+                                padding: '12px 20px',
+                                cursor: 'pointer',
+                                transition: 'background-color 0.3s',
+                            }}
+                            onClick={() => setActiveComponent('viewCategories')}
+                        >
+                            View Categories
+                        </li>
+                        <li 
+                            style={activeComponent === 'addSubcategory' ? {
+                                padding: '12px 20px',
+                                cursor: 'pointer',
+                                backgroundColor: '#34495e',
+                                borderLeft: '4px solid #f39c12',
+                            } : {
+                                padding: '12px 20px',
+                                cursor: 'pointer',
+                                transition: 'background-color 0.3s',
+                            }}
+                            onClick={() => setActiveComponent('addSubcategory')}
+                        >
+                            Add Subcategory
+                        </li>
+                        <li 
+                            style={activeComponent === 'viewSubcategories' ? {
+                                padding: '12px 20px',
+                                cursor: 'pointer',
+                                backgroundColor: '#34495e',
+                                borderLeft: '4px solid #f39c12',
+                            } : {
+                                padding: '12px 20px',
+                                cursor: 'pointer',
+                                transition: 'background-color 0.3s',
+                            }}
+                            onClick={() => setActiveComponent('viewSubcategories')}
+                        >
+                            View Subcategories
+                        </li>
+                    </ul>
+                </div>
+                <div style={{
+                    marginTop: 'auto',
+                    padding: '20px',
+                    borderTop: '1px solid #34495e'
                 }}>
-                    <li 
-                        style={activeComponent === 'addProduct' ? {
-                            padding: '12px 20px',
+                    <button
+                        onClick={handleLogout}
+                        style={{
+                            width: '100%',
+                            padding: '10px',
+                            backgroundColor: '#e74c3c',
+                            color: 'white',
+                            border: 'none',
+                            borderRadius: '4px',
                             cursor: 'pointer',
-                            backgroundColor: '#34495e',
-                            borderLeft: '4px solid #f39c12',
-                        } : {
-                            padding: '12px 20px',
-                            cursor: 'pointer',
+                            fontSize: '16px',
                             transition: 'background-color 0.3s',
+                            '&:hover': {
+                                backgroundColor: '#c0392b'
+                            }
                         }}
-                        onClick={() => setActiveComponent('addProduct')}
                     >
-                        Add Product
-                    </li>
-                    <li 
-                        style={activeComponent === 'viewProducts' ? {
-                            padding: '12px 20px',
-                            cursor: 'pointer',
-                            backgroundColor: '#34495e',
-                            borderLeft: '4px solid #f39c12',
-                        } : {
-                            padding: '12px 20px',
-                            cursor: 'pointer',
-                            transition: 'background-color 0.3s',
-                        }}
-                        onClick={() => setActiveComponent('viewProducts')}
-                    >
-                        View Products
-                    </li>
-                    <li 
-                        style={activeComponent === 'addCategory' ? {
-                            padding: '12px 20px',
-                            cursor: 'pointer',
-                            backgroundColor: '#34495e',
-                            borderLeft: '4px solid #f39c12',
-                        } : {
-                            padding: '12px 20px',
-                            cursor: 'pointer',
-                            transition: 'background-color 0.3s',
-                        }}
-                        onClick={() => setActiveComponent('addCategory')}
-                    >
-                        Add Category
-                    </li>
-                    <li 
-                        style={activeComponent === 'viewCategories' ? {
-                            padding: '12px 20px',
-                            cursor: 'pointer',
-                            backgroundColor: '#34495e',
-                            borderLeft: '4px solid #f39c12',
-                        } : {
-                            padding: '12px 20px',
-                            cursor: 'pointer',
-                            transition: 'background-color 0.3s',
-                        }}
-                        onClick={() => setActiveComponent('viewCategories')}
-                    >
-                        View Categories
-                    </li>
-                    <li 
-                        style={activeComponent === 'addSubcategory' ? {
-                            padding: '12px 20px',
-                            cursor: 'pointer',
-                            backgroundColor: '#34495e',
-                            borderLeft: '4px solid #f39c12',
-                        } : {
-                            padding: '12px 20px',
-                            cursor: 'pointer',
-                            transition: 'background-color 0.3s',
-                        }}
-                        onClick={() => setActiveComponent('addSubcategory')}
-                    >
-                        Add Subcategory
-                    </li>
-                    <li 
-                        style={activeComponent === 'viewSubcategories' ? {
-                            padding: '12px 20px',
-                            cursor: 'pointer',
-                            backgroundColor: '#34495e',
-                            borderLeft: '4px solid #f39c12',
-                        } : {
-                            padding: '12px 20px',
-                            cursor: 'pointer',
-                            transition: 'background-color 0.3s',
-                        }}
-                        onClick={() => setActiveComponent('viewSubcategories')}
-                    >
-                        View Subcategories
-                    </li>
-                </ul>
+                        Logout
+                    </button>
+                </div>
             </div>
             <div style={{
                 flex: 1,

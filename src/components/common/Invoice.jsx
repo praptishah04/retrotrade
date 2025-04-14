@@ -1,16 +1,20 @@
 import React, { useEffect, useState } from 'react';
 import { useLocation, useParams } from 'react-router-dom';
 import axios from 'axios';
-
+import { useNavigate } from 'react-router-dom';
 const Invoice = () => {
     const { orderId } = useParams();
+    // console.log("orderID"+orderId)
     const [orders, setOrders] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState('');
     const [paymentProcessing, setPaymentProcessing] = useState(false);
     const [paymentStatus, setPaymentStatus] = useState(null);
-
+    const navigate= useNavigate()
     const orderData = useLocation().state;
+    // console.log("orderdata",orderData)
+    // const orderId = orderData.orderData?._id;
+    // console.log("orderID"+orderId)
 
     // Format currency for display
     const formatCurrency = (amount) => {
@@ -105,6 +109,8 @@ const Invoice = () => {
 
                         if (verificationResponse.data.status === "success") {
                             setPaymentStatus('paid');
+                            await axios.delete(`http://localhost:4000/order/deleteorders/${orderData.orderData?.buyerId}`);
+                            await axios.delete(`http://localhost:4000/cart/clearcart/${orderData.orderData?.buyerId}`);
                             // Update local order status
                             const updatedOrders = orders.map(order => ({
                                 ...order,
@@ -113,6 +119,7 @@ const Invoice = () => {
                             }));
                             setOrders(updatedOrders);
                             alert("Payment successful! Your order is confirmed.");
+                            navigate("/exploreitems")
                         } else {
                             alert("Payment verification failed. Please contact support.");
                         }
@@ -157,10 +164,12 @@ const Invoice = () => {
 
     // Calculate total amount
     const totalAmount = orders.reduce((sum, order) => {
-        const price = order?.cartId?.productId?.price || 0;
+        const product = order?.cartId?.productId;
+        const price = product?.price || 0;
         const qty = order?.quantity || 1;
         return sum + price * qty;
     }, 0);
+    
 
     // Loading and error states
     if (loading) return <div style={{ textAlign: 'center', padding: '2rem' }}>Loading invoice...</div>;
@@ -255,38 +264,44 @@ const Invoice = () => {
                             </tr>
                         </thead>
                         <tbody>
-                            {orders.map((order) => (
-                                <tr key={order._id} style={{ borderBottom: '1px solid #edf2f7' }}>
-                                    <td style={{ padding: '12px', display: 'flex', alignItems: 'center' }}>
-                                        <img
-                                            src={order.cartId.productId.imageURL}
-                                            alt={order.cartId.productId.name}
-                                            style={{
-                                                height: '60px',
-                                                width: '60px',
-                                                objectFit: 'cover',
-                                                borderRadius: '8px',
-                                                marginRight: '12px'
-                                            }}
-                                        />
-                                        <div>
-                                            <div style={{ fontWeight: 600 }}>{order.cartId.productId.name}</div>
-                                            <div style={{ fontSize: '0.8rem', color: '#718096' }}>
-                                                {order.cartId.productId.description}
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td style={{ padding: '12px', color: '#4a5568' }}>
-                                        {formatCurrency(order.cartId.productId.price)}
-                                    </td>
-                                    <td style={{ padding: '12px', color: '#4a5568' }}>
-                                        {order.quantity}
-                                    </td>
-                                    <td style={{ padding: '12px', fontWeight: 600 }}>
-                                        {formatCurrency(order.cartId.productId.price * order.quantity)}
-                                    </td>
-                                </tr>
-                            ))}
+                        {orders.map((order) => {
+    const product = order?.cartId?.productId;
+    return (
+        <tr key={order._id} style={{ borderBottom: '1px solid #edf2f7' }}>
+            <td style={{ padding: '12px', display: 'flex', alignItems: 'center' }}>
+                <img
+                    src={product?.imageURL || 'default_image_url'} // Provide a fallback image URL
+                    alt={product?.name || 'Unknown Product'}
+                    style={{
+                        height: '60px',
+                        width: '60px',
+                        objectFit: 'cover',
+                        borderRadius: '8px',
+                        marginRight: '12px'
+                    }}
+                />
+                <div>
+                    <div style={{ fontWeight: 600 }}>
+                        {product?.name || 'Unknown Product'}
+                    </div>
+                    <div style={{ fontSize: '0.8rem', color: '#718096' }}>
+                        {product?.description || 'No description available'}
+                    </div>
+                </div>
+            </td>
+            <td style={{ padding: '12px', color: '#4a5568' }}>
+                {formatCurrency(product?.price || 0)}
+            </td>
+            <td style={{ padding: '12px', color: '#4a5568' }}>
+                {order?.quantity || 1}
+            </td>
+            <td style={{ padding: '12px', fontWeight: 600 }}>
+                {formatCurrency(product?.price * (order?.quantity || 1) || 0)}
+            </td>
+        </tr>
+    );
+})}
+
                         </tbody>
                     </table>
                 </div>
