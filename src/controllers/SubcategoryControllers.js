@@ -30,7 +30,7 @@ const getsubCategory = async(req,res)=>{
 
 const getsubCategoryByCategoryId = async(req,res)=>{
     try{
-        const categories = await subcategoryModel.find({categoryId:req.params.categoryId})
+        const categories = await subcategoryModel.find({categoryId:req.params.categoryId}).populate("categoryId")
         res.status(201).json({
             message:"category found",
             data:categories
