@@ -190,7 +190,7 @@ export const SellerLogin = () => {
             <Link to="/forgot-password">Forgot Password?</Link>
           </div>
 
-          <div className="social-login">
+          {/* <div className="social-login">
             <p>Or login with:</p>
             <div className="social-buttons">
               <motion.button
@@ -210,7 +210,7 @@ export const SellerLogin = () => {
                 <i className="fab fa-facebook"></i> Facebook
               </motion.button>
             </div>
-          </div>
+          </div> */}
 
           <div className="signup-link">
             <p>Don't have an account? <Link to="/signup">Signup</Link></p>

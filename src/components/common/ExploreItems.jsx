@@ -480,8 +480,8 @@ const goToPage = (page) => {
               </p>
               <div className="modal-specs">
                 <div className="spec-item">
-                  <span className="spec-label">Category:</span>
-                  <span>{selectedProduct.category || 'Not specified'}</span>
+                  {/* <span className="spec-label">Category:</span>
+                  <span>{selectedProduct.category || 'Not specified'}</span> */}
                 </div>
                 <div className="spec-item">
                   <span className="spec-label">Availability:</span>

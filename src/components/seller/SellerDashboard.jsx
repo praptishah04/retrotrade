@@ -154,7 +154,7 @@ const SellerDashboard = () => {
         localStorage.removeItem("token");
         localStorage.removeItem("id");
         localStorage.removeItem("role");
-        navigate("/sellerlogin");
+        navigate("/");
     };
 
     const handleAuction = () => {
@@ -380,7 +380,7 @@ const SellerDashboard = () => {
   </button>
   <button
     style={{ backgroundColor: '#e74c3c', color: '#fff', padding: '6px 12px', border: 'none', borderRadius: '4px', cursor: 'pointer' }}
-    onClick={() => handleDelete(product._id)}
+    onClick={() => deleteProduct(product?._id)}  
   >
     Delete
   </button>

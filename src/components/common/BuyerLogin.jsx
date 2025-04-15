@@ -197,18 +197,18 @@ export const BuyerLogin = () => {
             <Link to="/resetpassword">Forgot Password?</Link>
           </div>
 
-          <div className="social-login">
+          {/* <div className="social-login">
             <p>Or login with:</p>
-            <div className="social-buttons">
-              <motion.button
+            <div className="social-buttons"> */}
+              {/* <motion.button
                 type="button"
                 className="social-button google"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
               >
                 <i className="fab fa-google"></i> Google
-              </motion.button>
-              <motion.button
+              </motion.button> */}
+              {/* <motion.button
                 type="button"
                 className="social-button facebook"
                 whileHover={{ scale: 1.05 }}
@@ -217,7 +217,7 @@ export const BuyerLogin = () => {
                 <i className="fab fa-facebook"></i> Facebook
               </motion.button>
             </div>
-          </div>
+          </div> */}
 
           <div className="signup-link">
             <p>Don't have an account? <Link to="/signup">Signup</Link></p>

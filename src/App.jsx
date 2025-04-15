@@ -35,9 +35,6 @@ import Auction from './components/seller/Auction'
 
 
 
-
-
-
 function App() {
 
    axios.defaults.baseURL="http://localhost:4000"
