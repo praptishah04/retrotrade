@@ -31,6 +31,7 @@ import Invoice from './components/common/Invoice'
 import Wishlist from './components/common/Wishlist'
 import SellerDashboard from './components/seller/SellerDashboard'
 import { AddCategory } from './components/seller/AddCategory'
+import Auction from './components/seller/Auction'
 
 
 
@@ -71,6 +72,7 @@ function App() {
           
           <Route path='/sellerdashboard' element={<SellerDashboard/>}>
               {/* <Route path='sellerdashboard' element={<SellerDashboard/>}></Route> */}
+              <Route path='auction' element={<Auction/>}></Route>
               <Route path='addproduct' element={<AddProduct/>}></Route>
               <Route path='addcategory' element={<AddCategory/>}></Route>
               <Route path='viewproduct/:id' element={<ViewProducts/>}></Route>

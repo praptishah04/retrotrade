@@ -157,6 +157,10 @@ const SellerDashboard = () => {
         navigate("/sellerlogin");
     };
 
+    const handleAuction = () => {
+        navigate("/auction");
+    };
+
     const renderComponent = () => {
         switch (activeComponent) {
             case 'addProduct':
@@ -367,26 +371,21 @@ const SellerDashboard = () => {
                                                     />
                                                 </td>
                                                 <td style={{ padding: '12px 15px', color: '#495057' }}>₹{product.price}</td>
-                                                <td style={{ padding: '12px 15px', color: '#495057' }}>
-                                                    <button
-                                                        onClick={() => deleteProduct(product._id)}
-                                                        style={{
-                                                            padding: '6px 12px',
-                                                            backgroundColor: '#e74c3c',
-                                                            color: 'white',
-                                                            border: 'none',
-                                                            borderRadius: '4px',
-                                                            cursor: 'pointer',
-                                                            fontSize: '14px',
-                                                            transition: 'background-color 0.3s',
-                                                            opacity: isLoading ? 0.7 : 1,
-                                                            pointerEvents: isLoading ? 'none' : 'auto'
-                                                        }}
-                                                        disabled={isLoading}
-                                                    >
-                                                        Delete
-                                                    </button>
-                                                </td>
+                                                <td>
+  <button
+    style={{ marginRight: '10px', backgroundColor: '#007bff', color: '#fff', padding: '6px 12px', border: 'none', borderRadius: '4px', cursor: 'pointer' }}
+    onClick={() => handleAuction(product._id)}
+  >
+    Auction
+  </button>
+  <button
+    style={{ backgroundColor: '#e74c3c', color: '#fff', padding: '6px 12px', border: 'none', borderRadius: '4px', cursor: 'pointer' }}
+    onClick={() => handleDelete(product._id)}
+  >
+    Delete
+  </button>
+</td>
+
                                             </tr>
                                         ))
                                     ) : (
@@ -576,65 +575,62 @@ const SellerDashboard = () => {
                     </div>
                 );
 
-            case 'viewSubcategories':
-                console.log("All Subcategories:", allSubcategories);
-                console.log("All Categories:", addedcategory);
-
-                return (
-                    <div style={{ margin: '20px 0' }}>
+                case 'viewSubcategories':
+                    return (
+                      <div style={{ margin: '20px 0' }}>
                         <h2 style={{ fontSize: '24px', marginBottom: '15px', color: '#2c3e50' }}>Subcategories</h2>
                         <div style={{ overflowX: 'auto', marginBottom: '20px' }}>
-                            <table style={{
-                                width: '100%',
-                                borderCollapse: 'collapse',
-                                boxShadow: '0 2px 10px rgba(0,0,0,0.1)',
-                                backgroundColor: 'white',
-                            }}>
-                                <thead>
-                                    <tr style={{ backgroundColor: '#ecf0f1' }}>
-                                        <th style={{
-                                            padding: '12px 15px',
-                                            textAlign: 'left',
-                                            fontWeight: 'bold',
-                                            color: '#2c3e50',
-                                            borderBottom: '2px solid #ddd',
-                                        }}>Subcategory Name</th>
-                                        <th style={{
-                                            padding: '12px 15px',
-                                            textAlign: 'left',
-                                            fontWeight: 'bold',
-                                            color: '#2c3e50',
-                                            borderBottom: '2px solid #ddd',
-                                        }}>Category</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {allSubcategories?.length > 0 ? (
-                                        allSubcategories.map((subcategory) => (
-                                            <tr key={subcategory._id} style={{
-                                                borderBottom: '1px solid #ddd',
-                                                '&:hover': {
-                                                    backgroundColor: '#f5f5f5',
-                                                }
-                                            }}>
-                                                <td style={{ padding: '12px 15px', color: '#495057' }}>{subcategory.name}</td>
-                                                <td style={{ padding: '12px 15px', color: '#495057' }}>
-                                                    {addedcategory.find(cat => cat._id === subcategory?.categoryId)?.name}
-                                                </td>
-                                            </tr>
-                                        ))
-                                    ) : (
-                                        <tr>
-                                            <td colSpan="2" style={{ textAlign: 'center', padding: '20px' }}>
-                                                No subcategories found
-                                            </td>
-                                        </tr>
-                                    )}
-                                </tbody>
-                            </table>
+                          <table style={{
+                            width: '100%',
+                            borderCollapse: 'collapse',
+                            boxShadow: '0 2px 10px rgba(0,0,0,0.1)',
+                            backgroundColor: 'white',
+                          }}>
+                            <thead>
+                              <tr style={{ backgroundColor: '#ecf0f1' }}>
+                                <th style={{
+                                  padding: '12px 15px',
+                                  textAlign: 'left',
+                                  fontWeight: 'bold',
+                                  color: '#2c3e50',
+                                  borderBottom: '2px solid #ddd',
+                                }}>Subcategory Name</th>
+                                <th style={{
+                                  padding: '12px 15px',
+                                  textAlign: 'left',
+                                  fontWeight: 'bold',
+                                  color: '#2c3e50',
+                                  borderBottom: '2px solid #ddd',
+                                }}>Category</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              {allSubcategories?.length > 0 ? (
+                                allSubcategories.map((subcategory) => (
+                                  <tr key={subcategory._id} style={{
+                                    borderBottom: '1px solid #ddd',
+                                    '&:hover': {
+                                      backgroundColor: '#f5f5f5',
+                                    }
+                                  }}>
+                                    <td style={{ padding: '12px 15px', color: '#495057' }}>{subcategory.name}</td>
+                                    <td style={{ padding: '12px 15px', color: '#495057' }}>
+                                      {subcategory.categoryId?.name || 'No category'}
+                                    </td>
+                                  </tr>
+                                ))
+                              ) : (
+                                <tr>
+                                  <td colSpan="2" style={{ textAlign: 'center', padding: '20px' }}>
+                                    No subcategories found
+                                  </td>
+                                </tr>
+                              )}
+                            </tbody>
+                          </table>
                         </div>
-                    </div>
-                );
+                      </div>
+                    );
 
             default:
                 return <div style={{ padding: '20px' }}>Select a menu item</div>;

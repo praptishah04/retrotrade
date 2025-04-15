@@ -43,7 +43,7 @@ const Wishlist = () => {
         data: { buyerId, productId }
       });
       
-      setWishlistItems(wishlistItems.filter(item => item.productId._id !== productId));
+      setWishlistItems(wishlistItems.filter(item => item.productId?._id !== productId));
       toast.success('Removed from wishlist!');
     } catch (error) {
       toast.error('Failed to remove item');
@@ -121,15 +121,15 @@ const Wishlist = () => {
         </div>
       ) : (
         <div className="wishlist-grid">
-          {wishlistItems.map((item) => (
+          {wishlistItems?.map((item) => (
             <div key={item._id} className="wishlist-card">
               <div 
                 className="product-image"
-                onClick={() => openProductPopup(item.productId)}
+                onClick={() => openProductPopup(item?.productId)}
               >
                 <img 
-                  src={item.productId.imageURL} 
-                  alt={item.productId.name} 
+                  src={item.productId?.imageURL} 
+                  alt={item.productId?.name} 
                   onError={(e) => {
                     e.target.onerror = null;
                     e.target.src = '/placeholder-product.jpg';
@@ -139,7 +139,7 @@ const Wishlist = () => {
                   className="remove-btn"
                   onClick={(e) => {
                     e.stopPropagation();
-                    removeFromWishlist(item.productId._id);
+                    removeFromWishlist(item?.productId?._id);
                   }}
                 >
                   <FaTimes />
@@ -147,16 +147,15 @@ const Wishlist = () => {
               </div>
               
               <div className="product-info">
-                <h3 onClick={() => openProductPopup(item.productId)}>
-                  {item.productId.name}
+                <h3 onClick={() => openProductPopup(item?.productId)}>
+                  {item?.productId?.name}
                 </h3>
-                <p className="price">₹{item.productId.price}</p>
+                <p className="price">₹{item.productId?.price}</p>
                 <button 
                   className="add-to-cart-btn"
-                  onClick={() => handleAddToCart(item.productId)}
+                  onClick={() => handleAddToCart(item?.productId)}
                 >
                     Add To Cart
-                  {/* <FaShoppingCart /> Add to Cart */}
                 </button>
               </div>
             </div>
@@ -194,7 +193,7 @@ const Wishlist = () => {
                 <button 
                   className="modal-remove-btn"
                   onClick={() => {
-                    removeFromWishlist(selectedProduct._id);
+                    removeFromWishlist(selectedProduct?._id);
                     closeProductPopup();
                   }}
                 >
@@ -204,7 +203,7 @@ const Wishlist = () => {
                 <button 
                   className="modal-add-to-cart-btn"
                   onClick={() => {
-                    addToCart(selectedProduct);
+                    handleAddToCart(selectedProduct);
                     closeProductPopup();
                   }}
                 >
