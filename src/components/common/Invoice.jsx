@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { useLocation, useParams } from 'react-router-dom';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
+
 const Invoice = () => {
     const { orderId } = useParams();
     // console.log("orderID"+orderId)
@@ -118,8 +120,14 @@ const Invoice = () => {
                                 paymentStatus: 'paid'
                             }));
                             setOrders(updatedOrders);
-                            alert("Payment successful! Your order is confirmed.");
-                            navigate("/exploreitems")
+                            toast.success("Payment successful! Your order is confirmed.", {
+                                autoClose: 2000 // stays for 2 seconds
+                            });
+                            
+                            setTimeout(() => {
+                                navigate("/exploreitems");
+                            }, 2200); // Wait a bit longer than toast duration
+                            
                         } else {
                             alert("Payment verification failed. Please contact support.");
                         }

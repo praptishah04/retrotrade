@@ -17,6 +17,7 @@ const ExploreItems = () => {
   const [categories, setCategories] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
+  
   const productsPerPage = 6;
 
   const navigate = useNavigate();
@@ -106,6 +107,17 @@ const ExploreItems = () => {
     
     fetchData();
   }, []); // Properly closed useEffect
+
+  // Reset to page 1 when filters change
+useEffect(() => {
+  setCurrentPage(1);
+}, [searchTerm, selectedCategory]);
+
+useEffect(() => {
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}, [currentPage]);
+
+
   
 
   const handleProductClick = (product) => {

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 const SellerDashboard = () => {
     const [activeComponent, setActiveComponent] = useState('addProduct');
@@ -10,9 +11,33 @@ const SellerDashboard = () => {
     const [products, setProducts] = useState([]);
     const [allSubcategories, setAllSubcategories] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
-    const { register, handleSubmit, formState: { errors }, reset } = useForm();
+    const {
+        register,
+        handleSubmit,
+        setValue, // 👈 this is important
+        formState: { errors }
+      } = useForm();
+    const [selectedProduct, setSelectedProduct] = useState(null);
+    const [showUpdateModal, setShowUpdateModal] = useState(false);
     const navigate = useNavigate();
 
+    useEffect(() => {
+        if (selectedProduct) {
+          setValue("price", selectedProduct.price);
+        }
+      }, [selectedProduct, setValue]);
+      
+
+      useEffect(() => {
+        if (selectedProduct && showUpdateModal) {
+          setValue("price", selectedProduct.price);
+          setValue("name", selectedProduct.name);
+          setValue("description", selectedProduct.description);
+          setValue("categoryId", selectedProduct.categoryId);
+          setValue("subcategoryId", selectedProduct.subcategoryId);
+        }
+      }, [selectedProduct, showUpdateModal, setValue]);
+      
     // Fetch categories
     const getCategory = async () => {
         try {
@@ -78,6 +103,7 @@ const SellerDashboard = () => {
             }
         }
     };
+    
     useEffect(() => {
         getCategory();
         if (activeComponent === 'viewProducts') {
@@ -156,6 +182,48 @@ const SellerDashboard = () => {
         localStorage.removeItem("role");
         navigate("/");
     };
+
+    const handleUpdate = (productId) => {
+        const product = products.find(p => p._id === productId);
+        setSelectedProduct(product);
+        setShowUpdateModal(true);
+      };
+
+      const updateProductHandler = async (data) => {
+        setIsLoading(true);
+        const sellerId = localStorage.getItem("id");
+        
+        try {
+          // Only send the price and other necessary fields
+          const updateData = {
+            price: data.price,
+            // Include other fields that your backend might require
+            name: selectedProduct.name,
+            description: selectedProduct.description,
+            categoryId: selectedProduct.categoryId,
+            subcategoryId: selectedProduct.subcategoryId,
+            condition: selectedProduct.condition,
+            status: selectedProduct.status,
+            sellerId: sellerId
+          };
+      
+          await axios.put(`/product/updateproduct/${selectedProduct._id}`, updateData);
+    
+          toast.success("Product price updated successfully!");
+
+          setTimeout(() => {
+            setShowUpdateModal(false);
+            getAllMyProducts();
+          }, 1000);} // tiny delay to allow toast to render
+           catch (error) {
+    console.error("Error updating product:", error);
+    toast.error(error.response?.data?.message || "Failed to update product price");
+  } finally {
+    setIsLoading(false);
+  }
+};
+
+      
 
     // const handleAuction = () => {
     //     navigate("/auction");
@@ -305,17 +373,17 @@ const SellerDashboard = () => {
                     </div>
                 );
 
-            case 'viewProducts':
-                return (
-                    <div style={{ margin: '20px 0' }}>
+                case 'viewProducts':
+                    return (
+                      <div style={{ margin: '20px 0' }}>
                         <h2 style={{ fontSize: '24px', marginBottom: '15px', color: '#2c3e50' }}>My Products</h2>
                         <div style={{ overflowX: 'auto', marginBottom: '20px' }}>
-                            <table style={{
-                                width: '100%',
-                                borderCollapse: 'collapse',
-                                boxShadow: '0 2px 10px rgba(0,0,0,0.1)',
-                                backgroundColor: 'white',
-                            }}>
+                          <table style={{
+                            width: '100%',
+                            borderCollapse: 'collapse',
+                            boxShadow: '0 2px 10px rgba(0,0,0,0.1)',
+                            backgroundColor: 'white',
+                          }}>
                                 <thead>
                                     <tr style={{ backgroundColor: '#ecf0f1' }}>
                                         <th style={{
@@ -349,57 +417,71 @@ const SellerDashboard = () => {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {products?.length > 0 ? (
-                                        products.map((product) => (
-                                            <tr key={product._id} style={{
-                                                borderBottom: '1px solid #ddd',
-                                                '&:hover': {
-                                                    backgroundColor: '#f5f5f5',
-                                                }
-                                            }}>
-                                                <td style={{ padding: '12px 15px', color: '#495057' }}>{product.name}</td>
-                                                <td style={{ padding: '12px 15px', color: '#495057' }}>
-                                                    <img 
-                                                        style={{ 
-                                                            width: '60px', 
-                                                            height: '60px', 
-                                                            objectFit: 'cover', 
-                                                            borderRadius: '4px' 
-                                                        }} 
-                                                        src={product?.imageURL} 
-                                                        alt={product.name}
-                                                    />
-                                                </td>
-                                                <td style={{ padding: '12px 15px', color: '#495057' }}>₹{product.price}</td>
-                                                <td>
-  {/* <button
-    style={{ marginRight: '10px', backgroundColor: '#007bff', color: '#fff', padding: '6px 12px', border: 'none', borderRadius: '4px', cursor: 'pointer' }}
-    onClick={() => handleAuction(product._id)}
-  >
-    Auction
-  </button> */}
-  <button
-    style={{ backgroundColor: '#e74c3c', color: '#fff', padding: '6px 12px', border: 'none', borderRadius: '4px', cursor: 'pointer' }}
-    onClick={() => deleteProduct(product?._id)}  
-  >
-    Delete
-  </button>
-</td>
-
-                                            </tr>
-                                        ))
-                                    ) : (
-                                        <tr>
-                                            <td colSpan="4" style={{ textAlign: 'center', padding: '20px' }}>
-                                                No products found
-                                            </td>
-                                        </tr>
-                                    )}
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                );
+            {products?.length > 0 ? (
+              products.map((product) => (
+                <tr key={product._id} style={{
+                  borderBottom: '1px solid #ddd',
+                  '&:hover': {
+                    backgroundColor: '#f5f5f5',
+                  }
+                }}>
+                  <td style={{ padding: '12px 15px', color: '#495057' }}>{product.name}</td>
+                  <td style={{ padding: '12px 15px', color: '#495057' }}>
+                    <img 
+                      style={{ 
+                        width: '60px', 
+                        height: '60px', 
+                        objectFit: 'cover', 
+                        borderRadius: '4px' 
+                      }} 
+                      src={product?.imageURL} 
+                      alt={product.name}
+                    />
+                  </td>
+                  <td style={{ padding: '12px 15px', color: '#495057' }}>₹{product.price}</td>
+                  <td style={{ padding: '12px 15px' }}>
+                    <button
+                      style={{ 
+                        marginRight: '10px', 
+                        backgroundColor: '#3498db', 
+                        color: '#fff', 
+                        padding: '6px 12px', 
+                        border: 'none', 
+                        borderRadius: '4px', 
+                        cursor: 'pointer' 
+                      }}
+                      onClick={() => handleUpdate(product._id)}
+                    >
+                      Update
+                    </button>
+                    <button
+                      style={{ 
+                        backgroundColor: '#e74c3c', 
+                        color: '#fff', 
+                        padding: '6px 12px', 
+                        border: 'none', 
+                        borderRadius: '4px', 
+                        cursor: 'pointer' 
+                      }}
+                      onClick={() => deleteProduct(product?._id)}  
+                    >
+                      Delete
+                    </button>
+                  </td>
+                </tr>
+              ))
+            ) : (
+              <tr>
+                <td colSpan="4" style={{ textAlign: 'center', padding: '20px' }}>
+                  No products found
+                </td>
+              </tr>
+            )}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  );
 
             case 'addCategory':
                 return (
@@ -798,8 +880,163 @@ const SellerDashboard = () => {
             }}>
                 {renderComponent()}
             </div>
+            {showUpdateModal && selectedProduct && (
+  <div style={{
+    position: 'fixed',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    backgroundColor: 'rgba(0,0,0,0.5)',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    zIndex: 1000,
+  }}>
+    <div style={{
+      backgroundColor: 'white',
+      borderRadius: '8px',
+      padding: '30px',
+      boxShadow: '0 2px 10px rgba(0,0,0,0.2)',
+      width: '600px',
+      maxWidth: '90%',
+      maxHeight: '90vh',
+      overflowY: 'auto',
+    }}>
+      <div style={{
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        marginBottom: '20px',
+      }}>
+        <h2 style={{ margin: 0 }}>Update Product Price</h2>
+        <button 
+          onClick={() => setShowUpdateModal(false)}
+          style={{
+            background: 'none',
+            border: 'none',
+            fontSize: '20px',
+            cursor: 'pointer',
+            color: '#7f8c8d',
+          }}
+        >
+          &times;
+        </button>
+      </div>
+      
+      <form onSubmit={handleSubmit(updateProductHandler)}>
+        <div style={{ marginBottom: '15px' }}>
+          <label style={{ display: 'block', marginBottom: '5px', fontWeight: 'bold' }}>Name</label>
+          <input
+            type="text"
+            value={selectedProduct.name}
+            readOnly
+            style={{
+              width: '100%',
+              padding: '8px',
+              border: '1px solid #ddd',
+              borderRadius: '4px',
+              backgroundColor: '#f5f5f5'
+            }}
+          />
         </div>
-    );
+
+        <div style={{ marginBottom: '15px' }}>
+          <label style={{ display: 'block', marginBottom: '5px', fontWeight: 'bold' }}>Description</label>
+          <textarea
+            value={selectedProduct.description}
+            readOnly
+            style={{
+              width: '100%',
+              padding: '8px',
+              border: '1px solid #ddd',
+              borderRadius: '4px',
+              backgroundColor: '#f5f5f5',
+              minHeight: '80px'
+            }}
+          />
+        </div>
+
+        <div style={{ marginBottom: '15px' }}>
+          <label style={{ display: 'block', marginBottom: '5px', fontWeight: 'bold' }}>Price*</label>
+          <input
+            type="number"
+            {...register("price", { 
+              required: "Price is required",
+              valueAsNumber: true,
+              min: { value: 1, message: "Price must be greater than 0" }
+            })}
+            defaultValue={selectedProduct.price}
+            style={{
+              width: '100%',
+              padding: '8px',
+              border: errors.price ? '1px solid red' : '1px solid #ddd',
+              borderRadius: '4px'
+            }}
+          />
+          {errors.price && <span style={{ color: 'red', fontSize: '12px' }}>{errors.price.message}</span>}
+        </div>
+
+        <div style={{ marginBottom: '15px' }}>
+          <label style={{ display: 'block', marginBottom: '5px', fontWeight: 'bold' }}>Current Image</label>
+          <img 
+            src={selectedProduct.imageURL} 
+            alt={selectedProduct.name}
+            style={{ 
+              maxWidth: '100px', 
+              maxHeight: '100px',
+              border: '1px solid #ddd',
+              borderRadius: '4px'
+            }} 
+          />
+        </div>
+
+        {/* Hidden fields for required data */}
+        <input type="hidden" {...register("name")} value={selectedProduct.name} />
+        <input type="hidden" {...register("description")} value={selectedProduct.description} />
+        <input type="hidden" {...register("categoryId")} value={selectedProduct.categoryId} />
+        <input type="hidden" {...register("subcategoryId")} value={selectedProduct.subcategoryId} />
+
+        <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '10px', marginTop: '20px' }}>
+          <button
+            type="button"
+            onClick={() => setShowUpdateModal(false)}
+            style={{
+              padding: '8px 16px',
+              backgroundColor: '#6c757d',
+              color: 'white',
+              border: 'none',
+              borderRadius: '4px',
+              cursor: 'pointer'
+            }}
+          >
+            Cancel
+          </button>
+          <button
+            type="submit"
+            disabled={isLoading}
+            style={{
+              padding: '8px 16px',
+              backgroundColor: '#f39c12',
+              color: 'white',
+              border: 'none',
+              borderRadius: '4px',
+              cursor: 'pointer',
+              opacity: isLoading ? 0.7 : 1
+            }}
+          >
+            {isLoading ? 'Updating...' : 'Update Price'}
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+)}    </div>
+  );
 };
+
+//         </div>
+//     );
+// };
 
 export default SellerDashboard;

@@ -29,11 +29,8 @@ export const Cart = () => {
           Array.isArray(cartResponse.data.data) &&
           cartResponse.data.data.length > 0
         ) {
-          const uniqueCart = cartResponse.data.data.reduce((acc, item) => {
-            const existing = acc.find((i) => i.productid === item.productid);
-            if (!existing) acc.push(item);
-            return acc;
-          }, []);
+          setCart(cartResponse.data.data);
+
   
           console.log("Unique cart items:", uniqueCart);
           setCart(uniqueCart);
@@ -80,20 +77,40 @@ export const Cart = () => {
   const handleRemoveItem = async (cartItemId) => {
     try {
       if (!cartItemId) {
-        toast.error("Cart item ID is missing.");
+        toast.error("Cart item ID is missing.", { autoClose: 1500 });
         return;
       }
-
-      await axios.delete(`/cart/deletecartitem/${cartItemId}`);
-
-      setCart((prevCart) => prevCart.filter((item) => item._id !== cartItemId));
-
-      toast.success("Product removed from cart.");
+  
+      console.log("🔥 handleRemoveItem CALLED with ID:", cartItemId);
+  
+      await axios.delete(`http://localhost:4000/cart/deletecartitem/${cartItemId}`);
+  
+      // Use a temporary variable
+      let updatedCart = [];
+  
+      setCart((prevCart) => {
+        updatedCart = prevCart.filter((item) => item._id !== cartItemId);
+        return updatedCart;
+      });
+  
+      setTimeout(() => {
+        if (updatedCart.length === 0) {
+          toast.success("Product removed. Your cart is now empty!", { autoClose: 1500 });
+          navigate("/exploreitems");
+        } else {
+          toast.success("Product removed from cart.", { autoClose: 1500 });
+        }
+      }, 90);
+  
     } catch (error) {
-      console.error("Error deleting cart item:", error);
-      toast.error("Error deleting cart item.");
+      console.error("❌ Error deleting cart item:", error);
+      toast.error("Error deleting cart item.", { autoClose: 1500 });
     }
   };
+  
+  
+  
+  
 
   const handleOrderNow = async () => {
     console.log("handleOrderNow - isLoading:", isLoading);
@@ -259,73 +276,71 @@ export const Cart = () => {
                     {cart?.map((c) => {
                       return (
                         <div>
-                          <div
-                            style={{
-                              display: "flex",
-                              alignItems: "flex-start",
-                              marginTop: "30px",
-                              marginBottom: "30px",
-                            }}
-                          >
-                            <img
-                              src={c.productId?.imageURL}
-                              alt={c.productId?.name}
-                              style={{
-                                width: "150px",
-                                height: "auto",
-                                marginRight: "20px",
-                              }}
-                            />
-                            <div>
-                              <h3 style={{ fontSize: "1.7rem" }}>
-                                {c.productId?.productName}
-                              </h3>
-                              <p style={{ fontSize: "1.3rem" }}>
-                                Price: {c.productprice}
-                              </p>
-                              <p>{c.productId?.description}</p>
-                              <div>
-                                Qty &nbsp;&nbsp;
-                                <button
-                                  onClick={() =>
-                                    handleQuantityChange(c._id, -1)
-                                  }
-                                  style={{
-                                    padding: "5px 10px",
-                                    marginRight: "5px",
-                                    border: "1px solid #ccc",
-                                    cursor: "pointer",
-                                  }}
-                                >
-                                  −
-                                </button>
-                                <span style={{ margin: "0 10px" }}>
-                                  {c.quantity}
-                                </span>
-                                <button
-                                  onClick={() => handleQuantityChange(c._id, 1)}
-                                  style={{
-                                    padding: "5px 10px",
-                                    marginLeft: "5px",
-                                    border: "1px solid #ccc",
-                                    cursor: "pointer",
-                                  }}
-                                >
-                                  +
-                                </button>
-                                <i
-                                  class="bi bi-trash"
-                                  onClick={() => handleRemoveItem(c._id)}
-                                  style={{
-                                    marginTop: "20px",
-                                    color: "red",
-                                    fontSize: "20px",
-                                    marginLeft: "50px",
-                                  }}
-                                ></i>
-                              </div>
-                            </div>
-                          </div>
+                          <div style={{ display: "flex", alignItems: "center", marginTop: "30px", marginBottom: "30px" }}>
+  <img
+    src={c.productId?.imageURL}
+    alt={c.productId?.name}
+    style={{
+      width: "150px",
+      height: "auto",
+      marginRight: "20px",
+    }}
+  />
+  <div>
+    <h3 style={{ fontSize: "1.7rem" }}>
+      {c.productId?.productName}
+    </h3>
+    <p style={{ fontSize: "1.3rem" }}>
+      Price: {c.productprice}
+    </p>
+    <p>{c.productId?.description}</p>
+    <div style={{ display: "flex", alignItems: "center" }}>
+      Qty &nbsp;&nbsp;
+      <button
+        onClick={() => handleQuantityChange(c._id, -1)}
+        style={{
+          padding: "5px 10px",
+          marginRight: "5px",
+          border: "1px solid #ccc",
+          cursor: "pointer",
+        }}
+      >
+        −
+      </button>
+      <span style={{ margin: "0 10px" }}>
+        {c.quantity}
+      </span>
+      <button
+        onClick={() => handleQuantityChange(c._id, 1)}
+        style={{
+          padding: "5px 10px",
+          marginLeft: "5px",
+          border: "1px solid #ccc",
+          cursor: "pointer",
+        }}
+      >
+        +
+      </button>
+      
+      {/* Delete Button */}
+      <button
+        onClick={() => handleRemoveItem(c._id)}
+        style={{
+          marginLeft: "20px",
+          padding: "5px 10px",
+          backgroundColor: "red",
+          color: "white",
+          border: "none",
+          borderRadius: "4px",
+          cursor: "pointer",
+        }}
+      >
+        Delete
+      </button>
+    </div>
+  </div>
+</div>
+
                           <hr />
                         </div>
                       );
