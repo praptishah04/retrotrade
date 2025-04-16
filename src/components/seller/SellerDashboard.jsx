@@ -157,9 +157,9 @@ const SellerDashboard = () => {
         navigate("/");
     };
 
-    const handleAuction = () => {
-        navigate("/auction");
-    };
+    // const handleAuction = () => {
+    //     navigate("/auction");
+    // };
 
     const renderComponent = () => {
         switch (activeComponent) {
@@ -372,12 +372,12 @@ const SellerDashboard = () => {
                                                 </td>
                                                 <td style={{ padding: '12px 15px', color: '#495057' }}>₹{product.price}</td>
                                                 <td>
-  <button
+  {/* <button
     style={{ marginRight: '10px', backgroundColor: '#007bff', color: '#fff', padding: '6px 12px', border: 'none', borderRadius: '4px', cursor: 'pointer' }}
     onClick={() => handleAuction(product._id)}
   >
     Auction
-  </button>
+  </button> */}
   <button
     style={{ backgroundColor: '#e74c3c', color: '#fff', padding: '6px 12px', border: 'none', borderRadius: '4px', cursor: 'pointer' }}
     onClick={() => deleteProduct(product?._id)}  
