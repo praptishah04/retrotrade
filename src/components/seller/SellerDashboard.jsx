@@ -14,11 +14,15 @@ const SellerDashboard = () => {
     const {
         register,
         handleSubmit,
-        setValue, // 👈 this is important
+        setValue,reset, // 👈 this is important
         formState: { errors }
       } = useForm();
     const [selectedProduct, setSelectedProduct] = useState(null);
     const [showUpdateModal, setShowUpdateModal] = useState(false);
+    const [showCategoryUpdateModal, setShowCategoryUpdateModal] = useState(false);
+    const [selectedCategory, setSelectedCategory] = useState(null);
+    const [showSubcategoryUpdateModal, setShowSubcategoryUpdateModal] = useState(false);
+    const [selectedSubcategory, setSelectedSubcategory] = useState(null);
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -175,6 +179,66 @@ const SellerDashboard = () => {
             setIsLoading(false);
         }
     };
+
+    const deleteCategory = async (categoryId) => {
+      if (window.confirm("Are you sure you want to delete this category?")) {
+          setIsLoading(true);
+          try {
+              await axios.delete(`/category/deletecategory/${categoryId}`);
+              toast.success("Category deleted successfully!");
+              getCategory(); // Refresh the categories list
+          } catch (error) {
+              console.error("Error deleting category:", error);
+              toast.error(error.response?.data?.message || "Failed to delete category");
+          } finally {
+              setIsLoading(false);
+          }
+      }
+  };
+
+  const updateCategory = async (categoryId, updatedData) => {
+    setIsLoading(true);
+    try {
+        await axios.put(`/category/updatecategory/${categoryId}`, updatedData);
+        toast.success("Category updated successfully!");
+        getCategory(); // Refresh the categories
+    } catch (error) {
+        console.error("Error updating category:", error);
+        toast.error(error.response?.data?.message || "Failed to update category");
+    } finally {
+        setIsLoading(false);
+    }
+};
+
+const deleteSubcategory = async (subcategoryId) => {
+  if (window.confirm("Are you sure you want to delete this subcategory?")) {
+      try {
+          await axios.delete(`/subcategory/deletesubcategory/${subcategoryId}`);
+          toast.success("Subcategory deleted successfully!");
+          await getAllSubcategories();
+          // Optional: refetch subcategories to refresh the list
+          getsubCategoryByCategoryId(selectedCategoryId); // or however you're managing it
+      } catch (error) {
+          console.error("Error deleting subcategory:", error);
+          toast.error(error.response?.data?.message || "Failed to delete subcategory");
+      }
+  }
+};
+
+const updateSubcategory = async (subcategoryId, updatedData, categoryId) => {
+  try {
+      await axios.put(`/subcategory/updatesubcategory/${subcategoryId}`, updatedData);
+      toast.success("Subcategory updated successfully!");
+      await getAllSubcategories(); 
+      getsubCategoryByCategoryId(categoryId); // now it uses the passed categoryId
+  } catch (error) {
+      console.error("Error updating subcategory:", error);
+      toast.error(error.response?.data?.message || "Failed to update subcategory");
+  }
+};
+
+
+
 
     const handleLogout = () => {
         localStorage.removeItem("token");
@@ -536,52 +600,92 @@ const SellerDashboard = () => {
                     </div>
                 );
 
-            case 'viewCategories':
-                return (
+                case 'viewCategories':
+                  return (
                     <div style={{ margin: '20px 0' }}>
-                        <h2 style={{ fontSize: '24px', marginBottom: '15px', color: '#2c3e50' }}>Categories</h2>
-                        <div style={{ overflowX: 'auto', marginBottom: '20px' }}>
-                            <table style={{
-                                width: '100%',
-                                borderCollapse: 'collapse',
-                                boxShadow: '0 2px 10px rgba(0,0,0,0.1)',
-                                backgroundColor: 'white',
-                            }}>
-                                <thead>
-                                    <tr style={{ backgroundColor: '#ecf0f1' }}>
-                                        <th style={{
-                                            padding: '12px 15px',
-                                            textAlign: 'left',
-                                            fontWeight: 'bold',
-                                            color: '#2c3e50',
-                                            borderBottom: '2px solid #ddd',
-                                        }}>Category Name</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {addedcategory?.length > 0 ? (
-                                        addedcategory.map((category) => (
-                                            <tr key={category._id} style={{
-                                                borderBottom: '1px solid #ddd',
-                                                '&:hover': {
-                                                    backgroundColor: '#f5f5f5',
-                                                }
-                                            }}>
-                                                <td style={{ padding: '12px 15px', color: '#495057' }}>{category.name}</td>
-                                            </tr>
-                                        ))
-                                    ) : (
-                                        <tr>
-                                            <td style={{ textAlign: 'center', padding: '20px' }}>
-                                                No categories found
-                                            </td>
-                                        </tr>
-                                    )}
-                                </tbody>
-                            </table>
-                        </div>
+                      <h2 style={{ fontSize: '24px', marginBottom: '15px', color: '#2c3e50' }}>Categories</h2>
+                      <div style={{ overflowX: 'auto', marginBottom: '20px' }}>
+                        <table style={{
+                          width: '100%',
+                          borderCollapse: 'collapse',
+                          boxShadow: '0 2px 10px rgba(0,0,0,0.1)',
+                          backgroundColor: 'white',
+                        }}>
+                          <thead>
+                            <tr style={{ backgroundColor: '#ecf0f1' }}>
+                              <th style={{
+                                padding: '12px 15px',
+                                textAlign: 'left',
+                                fontWeight: 'bold',
+                                color: '#2c3e50',
+                                borderBottom: '2px solid #ddd',
+                              }}>Category Name</th>
+                              <th style={{
+                                padding: '12px 15px',
+                                textAlign: 'left',
+                                fontWeight: 'bold',
+                                color: '#2c3e50',
+                                borderBottom: '2px solid #ddd',
+                              }}>Actions</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {addedcategory?.length > 0 ? (
+                              addedcategory.map((category) => (
+                                <tr key={category._id} style={{
+                                  borderBottom: '1px solid #ddd',
+                                  '&:hover': {
+                                    backgroundColor: '#f5f5f5',
+                                  }
+                                }}>
+                                  <td style={{ padding: '12px 15px', color: '#495057' }}>{category.name}</td>
+                                  <td style={{ padding: '12px 15px', display: 'flex', gap: '10px' }}>
+                                    <button
+                                      style={{ 
+                                        backgroundColor: '#3498db', 
+                                        color: '#fff', 
+                                        padding: '6px 12px', 
+                                        border: 'none', 
+                                        borderRadius: '4px', 
+                                        cursor: 'pointer' 
+                                      }}
+                                      onClick={() => {
+                                        setSelectedCategory(category);
+                                        setShowCategoryUpdateModal(true);
+                                      }}
+                                      disabled={isLoading}
+                                    >
+                                      Update
+                                    </button>
+                                    <button
+                                      style={{ 
+                                        backgroundColor: '#e74c3c', 
+                                        color: '#fff', 
+                                        padding: '6px 12px', 
+                                        border: 'none', 
+                                        borderRadius: '4px', 
+                                        cursor: 'pointer' 
+                                      }}
+                                      onClick={() => deleteCategory(category._id)}
+                                      disabled={isLoading}
+                                    >
+                                      Delete
+                                    </button>
+                                  </td>
+                                </tr>
+                              ))
+                            ) : (
+                              <tr>
+                                <td colSpan="2" style={{ textAlign: 'center', padding: '20px' }}>
+                                  No categories found
+                                </td>
+                              </tr>
+                            )}
+                          </tbody>
+                        </table>
+                      </div>
                     </div>
-                );
+                  );
 
             case 'addSubcategory':
                 return (
@@ -658,61 +762,99 @@ const SellerDashboard = () => {
                 );
 
                 case 'viewSubcategories':
-                    return (
-                      <div style={{ margin: '20px 0' }}>
-                        <h2 style={{ fontSize: '24px', marginBottom: '15px', color: '#2c3e50' }}>Subcategories</h2>
-                        <div style={{ overflowX: 'auto', marginBottom: '20px' }}>
-                          <table style={{
-                            width: '100%',
-                            borderCollapse: 'collapse',
-                            boxShadow: '0 2px 10px rgba(0,0,0,0.1)',
-                            backgroundColor: 'white',
-                          }}>
-                            <thead>
-                              <tr style={{ backgroundColor: '#ecf0f1' }}>
-                                <th style={{
-                                  padding: '12px 15px',
-                                  textAlign: 'left',
-                                  fontWeight: 'bold',
-                                  color: '#2c3e50',
-                                  borderBottom: '2px solid #ddd',
-                                }}>Subcategory Name</th>
-                                <th style={{
-                                  padding: '12px 15px',
-                                  textAlign: 'left',
-                                  fontWeight: 'bold',
-                                  color: '#2c3e50',
-                                  borderBottom: '2px solid #ddd',
-                                }}>Category</th>
-                              </tr>
-                            </thead>
-                            <tbody>
-                              {allSubcategories?.length > 0 ? (
-                                allSubcategories.map((subcategory) => (
-                                  <tr key={subcategory._id} style={{
-                                    borderBottom: '1px solid #ddd',
-                                    '&:hover': {
-                                      backgroundColor: '#f5f5f5',
-                                    }
-                                  }}>
-                                    <td style={{ padding: '12px 15px', color: '#495057' }}>{subcategory.name}</td>
-                                    <td style={{ padding: '12px 15px', color: '#495057' }}>
-                                      {subcategory.categoryId?.name || 'No category'}
-                                    </td>
-                                  </tr>
-                                ))
-                              ) : (
-                                <tr>
-                                  <td colSpan="2" style={{ textAlign: 'center', padding: '20px' }}>
-                                    No subcategories found
-                                  </td>
-                                </tr>
-                              )}
-                            </tbody>
-                          </table>
-                        </div>
-                      </div>
-                    );
+  return (
+    <div style={{ margin: '20px 0' }}>
+      <h2 style={{ fontSize: '24px', marginBottom: '15px', color: '#2c3e50' }}>Subcategories</h2>
+      <div style={{ overflowX: 'auto', marginBottom: '20px' }}>
+        <table style={{
+          width: '100%',
+          borderCollapse: 'collapse',
+          boxShadow: '0 2px 10px rgba(0,0,0,0.1)',
+          backgroundColor: 'white',
+        }}>
+          <thead>
+            <tr style={{ backgroundColor: '#ecf0f1' }}>
+              <th style={{
+                padding: '12px 15px',
+                textAlign: 'left',
+                fontWeight: 'bold',
+                color: '#2c3e50',
+                borderBottom: '2px solid #ddd',
+              }}>Subcategory Name</th>
+              <th style={{
+                padding: '12px 15px',
+                textAlign: 'left',
+                fontWeight: 'bold',
+                color: '#2c3e50',
+                borderBottom: '2px solid #ddd',
+              }}>Category</th>
+              <th style={{
+                padding: '12px 15px',
+                textAlign: 'left',
+                fontWeight: 'bold',
+                color: '#2c3e50',
+                borderBottom: '2px solid #ddd',
+              }}>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {allSubcategories?.length > 0 ? (
+              allSubcategories.map((subcategory) => (
+                <tr key={subcategory._id} style={{
+                  borderBottom: '1px solid #ddd',
+                  '&:hover': {
+                    backgroundColor: '#f5f5f5',
+                  }
+                }}>
+                  <td style={{ padding: '12px 15px', color: '#495057' }}>{subcategory.name}</td>
+                  <td style={{ padding: '12px 15px', color: '#495057' }}>
+                    {subcategory.categoryId?.name || 'No category'}
+                  </td>
+                  <td style={{ padding: '12px 15px', display: 'flex', gap: '10px' }}>
+                    <button
+                      style={{ 
+                        backgroundColor: '#3498db', 
+                        color: '#fff', 
+                        padding: '6px 12px', 
+                        border: 'none', 
+                        borderRadius: '4px', 
+                        cursor: 'pointer' 
+                      }}
+                      onClick={() => {
+                        setSelectedSubcategory(subcategory);
+                        setShowSubcategoryUpdateModal(true);
+                      }}
+                    >
+                      Update
+                    </button>
+                    <button
+                      style={{ 
+                        backgroundColor: '#e74c3c', 
+                        color: '#fff', 
+                        padding: '6px 12px', 
+                        border: 'none', 
+                        borderRadius: '4px', 
+                        cursor: 'pointer' 
+                      }}
+                      onClick={() => deleteSubcategory(subcategory._id)}
+                    >
+                      Delete
+                    </button>
+                  </td>
+                </tr>
+              ))
+            ) : (
+              <tr>
+                <td colSpan="3" style={{ textAlign: 'center', padding: '20px' }}>
+                  No subcategories found
+                </td>
+              </tr>
+            )}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  );
 
             default:
                 return <div style={{ padding: '20px' }}>Select a menu item</div>;
@@ -1031,12 +1173,238 @@ const SellerDashboard = () => {
       </form>
     </div>
   </div>
-)}    </div>
+)}  
+{showCategoryUpdateModal && selectedCategory && (
+  <div style={{
+    position: 'fixed',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    backgroundColor: 'rgba(0,0,0,0.5)',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    zIndex: 1000,
+  }}>
+    <div style={{
+      backgroundColor: 'white',
+      borderRadius: '8px',
+      padding: '30px',
+      boxShadow: '0 2px 10px rgba(0,0,0,0.2)',
+      width: '500px',
+      maxWidth: '90%',
+    }}>
+      <div style={{
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        marginBottom: '20px',
+      }}>
+        <h2 style={{ margin: 0 }}>Update Category</h2>
+        <button 
+          onClick={() => setShowCategoryUpdateModal(false)}
+          style={{
+            background: 'none',
+            border: 'none',
+            fontSize: '20px',
+            cursor: 'pointer',
+            color: '#7f8c8d',
+          }}
+        >
+          &times;
+        </button>
+      </div>
+      
+      <div style={{ marginBottom: '20px' }}>
+        <label style={{ display: 'block', marginBottom: '8px', fontWeight: '500' }}>
+          Category Name
+        </label>
+        <input
+          type="text"
+          id="categoryName"
+          defaultValue={selectedCategory.name}
+          style={{
+            width: '100%',
+            padding: '10px',
+            border: '1px solid #ddd',
+            borderRadius: '4px',
+            fontSize: '16px',
+          }}
+        />
+      </div>
+
+      <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '10px' }}>
+        <button
+          onClick={() => setShowCategoryUpdateModal(false)}
+          style={{
+            padding: '8px 16px',
+            backgroundColor: '#6c757d',
+            color: 'white',
+            border: 'none',
+            borderRadius: '4px',
+            cursor: 'pointer'
+          }}
+        >
+          Cancel
+        </button>
+        <button
+          onClick={() => {
+            const newName = document.getElementById('categoryName').value;
+            if (newName && newName !== selectedCategory.name) {
+              updateCategory(selectedCategory._id, { name: newName });
+              setShowCategoryUpdateModal(false);
+            }
+          }}
+          style={{
+            padding: '8px 16px',
+            backgroundColor: '#f39c12',
+            color: 'white',
+            border: 'none',
+            borderRadius: '4px',
+            cursor: 'pointer'
+          }}
+          disabled={isLoading}
+        >
+          {isLoading ? 'Updating...' : 'Update'}
+        </button>
+      </div>
+    </div>
+  </div>
+)}  
+{showSubcategoryUpdateModal && selectedSubcategory && (
+  <div style={{
+    position: 'fixed',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    backgroundColor: 'rgba(0,0,0,0.5)',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    zIndex: 1000,
+  }}>
+    <div style={{
+      backgroundColor: 'white',
+      borderRadius: '8px',
+      padding: '30px',
+      boxShadow: '0 2px 10px rgba(0,0,0,0.2)',
+      width: '500px',
+      maxWidth: '90%',
+    }}>
+      <div style={{
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        marginBottom: '20px',
+      }}>
+        <h2 style={{ margin: 0 }}>Update Subcategory</h2>
+        <button 
+          onClick={() => setShowSubcategoryUpdateModal(false)}
+          style={{
+            background: 'none',
+            border: 'none',
+            fontSize: '20px',
+            cursor: 'pointer',
+            color: '#7f8c8d',
+          }}
+        >
+          &times;
+        </button>
+      </div>
+      
+      <div style={{ marginBottom: '20px' }}>
+        <label htmlFor="subcategoryName" style={{ display: 'block', marginBottom: '8px', fontWeight: '500' }}>
+          Subcategory Name
+        </label>
+        <input
+          type="text"
+          id="subcategoryName"
+          defaultValue={selectedSubcategory.name}
+          style={{
+            width: '100%',
+            padding: '10px',
+            border: '1px solid #ddd',
+            borderRadius: '4px',
+            fontSize: '16px',
+          }}
+        />
+      </div>
+
+      <div style={{ marginBottom: '20px' }}>
+        <label htmlFor="subcategoryCategory" style={{ display: 'block', marginBottom: '8px', fontWeight: '500' }}>
+          Category
+        </label>
+        <select
+          id="subcategoryCategory"
+          defaultValue={selectedSubcategory.categoryId?._id || ''}
+          style={{
+            width: '100%',
+            padding: '10px',
+            border: '1px solid #ddd',
+            borderRadius: '4px',
+            fontSize: '16px',
+          }}
+        >
+          <option value="">Select Category</option>
+          {addedcategory?.map((category) => (
+            <option key={category._id} value={category._id}>
+              {category.name}
+            </option>
+          ))}
+        </select>
+      </div>
+
+      <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '10px' }}>
+        <button
+          onClick={() => setShowSubcategoryUpdateModal(false)}
+          style={{
+            padding: '8px 16px',
+            backgroundColor: '#6c757d',
+            color: 'white',
+            border: 'none',
+            borderRadius: '4px',
+            cursor: 'pointer'
+          }}
+        >
+          Cancel
+        </button>
+        <button
+          onClick={() => {
+            const newName = document.getElementById('subcategoryName').value;
+            const newCategoryId = document.getElementById('subcategoryCategory').value;
+            
+            if (newName && (newName !== selectedSubcategory.name || 
+                newCategoryId !== selectedSubcategory.categoryId?._id)) {
+              updateSubcategory(selectedSubcategory._id, { 
+                name: newName,
+                categoryId: newCategoryId
+              }).then(() => {
+                setShowSubcategoryUpdateModal(false);
+                getAllSubcategories(); // Refresh the list after update
+              });
+            }
+          }}
+          style={{
+            padding: '8px 16px',
+            backgroundColor: '#f39c12',
+            color: 'white',
+            border: 'none',
+            borderRadius: '4px',
+            cursor: 'pointer'
+          }}
+          disabled={isLoading}
+        >
+          {isLoading ? 'Updating...' : 'Update'}
+        </button>
+      </div>
+    </div>
+  </div>
+)}
+</div>
   );
 };
 
-//         </div>
-//     );
-// };
 
 export default SellerDashboard;
