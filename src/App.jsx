@@ -32,6 +32,7 @@ import Wishlist from './components/common/Wishlist'
 import SellerDashboard from './components/seller/SellerDashboard'
 import { AddCategory } from './components/seller/AddCategory'
 import Auction from './components/seller/Auction'
+import ForgotPassword from './components/common/ForgotPassword'
 
 
 
@@ -56,7 +57,7 @@ function App() {
           <Route path='/sellerlogin' element={<SellerLogin/>}></Route>
           <Route path='/demo' element={<Demo/>}></Route>
           <Route path ="/resetpassword/:token" element={<ResetPassword/>}></Route>
-
+          <Route path='/forgotpassword' element={<ForgotPassword/>}></Route>
           <Route path='/buyersignup' element={<BuyerSignup/>}></Route>
           <Route path='/sellersignup' element={<SellerSignup/>}></Route>
           <Route path='/adminsignup' element={<AdminSignup/>}></Route>

@@ -194,7 +194,7 @@ export const BuyerLogin = () => {
           </motion.button>
 
           <div className="forgot-password">
-            <Link to="/resetpassword">Forgot Password?</Link>
+            <Link to="/forgotpassword">Forgot Password?</Link>
           </div>
 
           {/* <div className="social-login">
