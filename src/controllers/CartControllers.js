@@ -79,8 +79,7 @@ const deleteCart = async (req, res) => {
 
 const deleteCartItem = async (req, res) => {
   try {
-    const { cartItemId } = req.params;
-    const deletedCartItem = await cartModel.findByIdAndDelete(cartItemId);
+    const deletedCartItem = await cartModel.findByIdAndDelete(req.params.id);
     if (!deletedCartItem) {
       return res.status(404).json({ message: "Cart item not found" });
     }
@@ -94,6 +93,7 @@ const deleteCartItem = async (req, res) => {
     });
   }
 };
+
 
 const clearCartByBuyerId = async (req, res) => {
   try {

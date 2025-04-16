@@ -6,6 +6,7 @@ routes.get("/getproduct",productControllers.getproduct)
 routes.post("/addwithfile",productControllers.addProductWithFile)
 routes.get('/getProductsbyuserid/:sellerId', productControllers.getAllProductsByUserId);
 routes.delete("/deleteproduct/:productId", productControllers.deleteproduct);  // Add :id parameter
+routes.put("/updateproduct/:productId", productControllers.updateProduct);
 
 
 module.exports=routes

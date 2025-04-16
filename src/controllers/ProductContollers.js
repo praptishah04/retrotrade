@@ -65,6 +65,34 @@ const deleteproduct = async (req, res) => {
 };
 
 
+const updateProduct = async (req, res) => {
+  try {
+      const { productId } = req.params;
+      const updatedData = req.body;
+
+      const updatedProduct = await productModel.findByIdAndUpdate(
+          productId,
+          updatedData,
+          { new: true } // this ensures the updated document is returned
+      ).populate("categoryId subcategoryId sellerId");
+
+      if (!updatedProduct) {
+          return res.status(404).json({ message: "Product not found" });
+      }
+
+      res.status(200).json({
+          message: "Product updated successfully",
+          data: updatedProduct,
+      });
+  } catch (err) {
+      res.status(500).json({
+          message: err.message,
+      });
+  }
+};
+
+
+
 const getAllProductsByUserId = async (req, res) => {
   
     try {
@@ -111,5 +139,5 @@ const addProductWithFile = async(req,res)=>{
 
 
 module.exports={
-    addproduct,getproduct,addProductWithFile,getAllProductsByUserId,deleteproduct
+    addproduct,getproduct,addProductWithFile,getAllProductsByUserId,deleteproduct,updateProduct
 }
