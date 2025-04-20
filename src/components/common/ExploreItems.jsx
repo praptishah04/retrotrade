@@ -88,8 +88,8 @@ const ExploreItems = () => {
           axios.get(`/wishlist/${buyerId}`)
             .then(response => {
               const wishlistProductIds = response.data.wishlist
-  .filter(item => item.productId && item.productId._id)
-  .map(item => item.productId._id);
+              .filter(item => item.productId && item.productId._id)
+              .map(item => item.productId._id);
 
             })
             .catch(error => {
@@ -153,7 +153,8 @@ useEffect(() => {
         quantity: 1,
       });
 
-      navigate('/cart', { state: { productId: product._id } });
+      // navigate('/cart', { state: { productId: product._id } });
+      toast.success('Item added to cart!');
     } catch (error) {
       alert('Error adding to cart: ' + (error?.message || error));
     }
@@ -468,52 +469,60 @@ const goToPage = (page) => {
 )}
 
 
-      {selectedProduct && (
-        <div className="modal-overlay" onClick={handleCloseModal}>
-          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-            <button className="close-modal" onClick={handleCloseModal}><FaTimes /></button>
-            <div className="modal-image-container">
-              <img 
-                src={selectedProduct.imageURL} 
-                alt={selectedProduct.name}
-                onError={(e) => {
-                  e.target.onerror = null; 
-                  e.target.src = '/placeholder-product.jpg';
-                }}
-              />
-            </div>
-            <div className="modal-details">
-              <h2>{selectedProduct.name || 'Product Name Not Available'}</h2>
-              <div className="modal-price">
-                ₹{selectedProduct.price?.toLocaleString() || 'Price Not Available'}
-              </div>
-              <p className="modal-description">
-                {selectedProduct.description || 'No description available'}
-              </p>
-              <div className="modal-specs">
-                <div className="spec-item">
-                  {/* <span className="spec-label">Category:</span>
-                  <span>{selectedProduct.category || 'Not specified'}</span> */}
-                </div>
-                <div className="spec-item">
-                  <span className="spec-label">Availability:</span>
-                  <span className="in-stock">
-                    In Stock
-                    {/* In Stock ({selectedProduct.stock || 'N/A'} left) */}
-                  </span>
-                </div>
-              </div>
-              <button 
-                className="modal-add-to-cart"
-                onClick={() => handleAddToCart(selectedProduct)}
-              >
-                Add To Cart
-                {/* <FaShoppingCart /> Add to Cart */}
-              </button>
-            </div>
+// Updated ExploreItems.jsx (only the modal part changes)
+{selectedProduct && (
+  <div className="modal-overlay" onClick={handleCloseModal}>
+    <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+      <button className="close-modal" onClick={handleCloseModal}><FaTimes /></button>
+      <div className="modal-image-container">
+        <img 
+          src={selectedProduct.imageURL} 
+          alt={selectedProduct.name}
+          className="modal-product-image"
+          onError={(e) => {
+            e.target.onerror = null; 
+            e.target.src = '/placeholder-product.jpg';
+          }}
+        />
+      </div>
+      <div className="modal-details">
+        <h2>{selectedProduct.name || 'Product Name Not Available'}</h2>
+        <div className="modal-price">
+          ₹{selectedProduct.price?.toLocaleString() || 'Price Not Available'}
+        </div>
+        <p className="modal-description">
+          {selectedProduct.description || 'No description available'}
+        </p>
+        <div className="modal-specs">
+          <div className="spec-item">
+            <span className="spec-label">Availability:</span>
+            <span className="in-stock">
+              In Stock
+            </span>
           </div>
         </div>
-      )}
+        <button 
+          className="modal-add-to-cart"
+          onClick={() => handleAddToCart(selectedProduct)}
+        >
+          Add To Cart
+        </button>
+      </div>
+    </div>
+</div>
+)}
+    <ToastContainer
+  position="top-right"
+  autoClose={3000}
+  hideProgressBar={false}
+  newestOnTop={false}
+  closeOnClick
+  rtl={false}
+  pauseOnFocusLoss
+  draggable
+  pauseOnHover
+/>
+
     </div>
   );
 };

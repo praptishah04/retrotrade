@@ -272,43 +272,44 @@ const Invoice = () => {
                             </tr>
                         </thead>
                         <tbody>
-                        {orders.map((order) => {
-    const product = order?.cartId?.productId;
-    return (
-        <tr key={order._id} style={{ borderBottom: '1px solid #edf2f7' }}>
-            <td style={{ padding: '12px', display: 'flex', alignItems: 'center' }}>
-                <img
-                    src={product?.imageURL || 'default_image_url'} // Provide a fallback image URL
-                    alt={product?.name || 'Unknown Product'}
-                    style={{
-                        height: '60px',
-                        width: '60px',
-                        objectFit: 'cover',
-                        borderRadius: '8px',
-                        marginRight: '12px'
-                    }}
-                />
-                <div>
-                    <div style={{ fontWeight: 600 }}>
-                        {product?.name || 'Unknown Product'}
+                        {orders
+    .filter(order => order?.cartId?.productId) // Only show orders with existing products
+    .map((order) => {
+        const product = order.cartId.productId;
+
+        return (
+            <tr key={order._id} style={{ borderBottom: '1px solid #edf2f7' }}>
+                <td style={{ padding: '12px', display: 'flex', alignItems: 'center' }}>
+                    <img
+                        src={product.imageURL}
+                        alt={product.name}
+                        style={{
+                            height: '60px',
+                            width: '60px',
+                            objectFit: 'cover',
+                            borderRadius: '8px',
+                            marginRight: '12px'
+                        }}
+                    />
+                    <div>
+                        <div style={{ fontWeight: 600 }}>{product.name}</div>
+                        <div style={{ fontSize: '0.8rem', color: '#718096' }}>
+                            {product.description}
+                        </div>
                     </div>
-                    <div style={{ fontSize: '0.8rem', color: '#718096' }}>
-                        {product?.description || 'No description available'}
-                    </div>
-                </div>
-            </td>
-            <td style={{ padding: '12px', color: '#4a5568' }}>
-                {formatCurrency(product?.price || 0)}
-            </td>
-            <td style={{ padding: '12px', color: '#4a5568' }}>
-                {order?.quantity || 1}
-            </td>
-            <td style={{ padding: '12px', fontWeight: 600 }}>
-                {formatCurrency(product?.price * (order?.quantity || 1) || 0)}
-            </td>
-        </tr>
-    );
-})}
+                </td>
+                <td style={{ padding: '12px', color: '#4a5568' }}>
+                    {formatCurrency(product.price)}
+                </td>
+                <td style={{ padding: '12px', color: '#4a5568' }}>
+                    {order?.quantity || 1}
+                </td>
+                <td style={{ padding: '12px', fontWeight: 600 }}>
+                    {formatCurrency(product.price * (order?.quantity || 1))}
+                </td>
+            </tr>
+        );
+    })}
 
                         </tbody>
                     </table>

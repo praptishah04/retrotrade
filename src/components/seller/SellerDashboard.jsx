@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
 const SellerDashboard = () => {
-    const [activeComponent, setActiveComponent] = useState('addProduct');
+    const [activeComponent, setActiveComponent] = useState('overview');
     const [addedcategory, setAddedcategory] = useState([]);
     const [addedsubcategories, setAddedsubcategories] = useState([]);
     const [products, setProducts] = useState([]);
@@ -23,6 +23,14 @@ const SellerDashboard = () => {
     const [selectedCategory, setSelectedCategory] = useState(null);
     const [showSubcategoryUpdateModal, setShowSubcategoryUpdateModal] = useState(false);
     const [selectedSubcategory, setSelectedSubcategory] = useState(null);
+    const [overviewData, setOverviewData] = useState({
+      totalProducts: 0,
+      activeProducts: 0,
+      inactiveProducts: 0,
+      totalCategories: 0,
+      totalSubcategories: 0
+    });
+    
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -109,13 +117,16 @@ const SellerDashboard = () => {
     };
     
     useEffect(() => {
-        getCategory();
-        if (activeComponent === 'viewProducts') {
-            getAllMyProducts();
-        }
-        if (activeComponent === 'viewSubcategories') {
-            getAllSubcategories();
-        }
+      getCategory();
+      if (activeComponent === 'viewProducts') {
+        getAllMyProducts();
+      }
+      if (activeComponent === 'viewSubcategories') {
+        getAllSubcategories();
+      }
+      if (activeComponent === 'overview') {
+        fetchOverviewData();
+      }
     }, [activeComponent]);
 
     const submitHandler = async (data) => {
@@ -287,6 +298,31 @@ const updateSubcategory = async (subcategoryId, updatedData, categoryId) => {
   }
 };
 
+
+const fetchOverviewData = async () => {
+  try {
+    const sellerId = localStorage.getItem("id");
+    const [productsRes, categoriesRes, subcategoriesRes] = await Promise.all([
+      axios.get(`/product/getProductsbyuserid/${sellerId}`),
+      axios.get("/category/getcategory"),
+      axios.get("/subcategory/getsubcategory")
+    ]);
+
+    const products = productsRes.data.data || [];
+    const activeProducts = products.filter(p => p.status === 'active').length;
+    
+    setOverviewData({
+      totalProducts: products.length,
+      activeProducts,
+      inactiveProducts: products.length - activeProducts,
+      totalCategories: categoriesRes.data.data?.length || 0,
+      totalSubcategories: subcategoriesRes.data.data?.length || 0
+    });
+  } catch (error) {
+    console.error("Error fetching overview data:", error);
+    toast.error("Failed to load dashboard overview");
+  }
+};
       
 
     // const handleAuction = () => {
@@ -295,6 +331,261 @@ const updateSubcategory = async (subcategoryId, updatedData, categoryId) => {
 
     const renderComponent = () => {
         switch (activeComponent) {
+          case 'overview':
+  return (
+    <div style={{ margin: '20px 0' }}>
+      <h2 style={{ fontSize: '24px', marginBottom: '20px', color: '#2c3e50' }}>Dashboard Overview</h2>
+      
+      <div style={{
+        display: 'grid',
+        gridTemplateColumns: 'repeat(auto-fill, minmax(250px, 1fr))',
+        gap: '20px',
+        marginBottom: '30px'
+      }}>
+        {/* Products Card */}
+        <div style={{
+          backgroundColor: 'white',
+          borderRadius: '8px',
+          padding: '20px',
+          boxShadow: '0 2px 10px rgba(0,0,0,0.1)',
+          borderTop: '4px solid #3498db'
+        }}>
+          <h3 style={{ margin: '0 0 10px 0', color: '#7f8c8d' }}>Products</h3>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            <span style={{ fontSize: '28px', fontWeight: 'bold', color: '#2c3e50' }}>
+              {overviewData.totalProducts}
+            </span>
+            <button 
+              onClick={() => setActiveComponent('viewProducts')}
+              style={{
+                backgroundColor: '#3498db',
+                color: 'white',
+                border: 'none',
+                borderRadius: '4px',
+                padding: '6px 12px',
+                cursor: 'pointer',
+                fontSize: '14px'
+              }}
+            >
+              View All
+            </button>
+          </div>
+          <div style={{ marginTop: '15px', display: 'flex', justifyContent: 'space-between' }}>
+            <span style={{ color: '#27ae60' }}>Active: {overviewData.activeProducts}</span>
+            <span style={{ color: '#e74c3c' }}>Inactive: {overviewData.inactiveProducts}</span>
+          </div>
+        </div>
+
+        {/* Categories Card */}
+        <div style={{
+          backgroundColor: 'white',
+          borderRadius: '8px',
+          padding: '20px',
+          boxShadow: '0 2px 10px rgba(0,0,0,0.1)',
+          borderTop: '4px solid #f39c12'
+        }}>
+          <h3 style={{ margin: '0 0 10px 0', color: '#7f8c8d' }}>Categories</h3>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            <span style={{ fontSize: '28px', fontWeight: 'bold', color: '#2c3e50' }}>
+              {overviewData.totalCategories}
+            </span>
+            <button 
+              onClick={() => setActiveComponent('viewCategories')}
+              style={{
+                backgroundColor: '#f39c12',
+                color: 'white',
+                border: 'none',
+                borderRadius: '4px',
+                padding: '6px 12px',
+                cursor: 'pointer',
+                fontSize: '14px'
+              }}
+            >
+              View All
+            </button>
+          </div>
+        </div>
+
+        {/* Subcategories Card */}
+        <div style={{
+          backgroundColor: 'white',
+          borderRadius: '8px',
+          padding: '20px',
+          boxShadow: '0 2px 10px rgba(0,0,0,0.1)',
+          borderTop: '4px solid #2ecc71'
+        }}>
+          <h3 style={{ margin: '0 0 10px 0', color: '#7f8c8d' }}>Subcategories</h3>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            <span style={{ fontSize: '28px', fontWeight: 'bold', color: '#2c3e50' }}>
+              {overviewData.totalSubcategories}
+            </span>
+            <button 
+              onClick={() => setActiveComponent('viewSubcategories')}
+              style={{
+                backgroundColor: '#2ecc71',
+                color: 'white',
+                border: 'none',
+                borderRadius: '4px',
+                padding: '6px 12px',
+                cursor: 'pointer',
+                fontSize: '14px'
+              }}
+            >
+              View All
+            </button>
+          </div>
+        </div>
+      </div>
+
+      {/* Quick Actions Section */}
+      <div style={{
+        backgroundColor: 'white',
+        borderRadius: '8px',
+        padding: '20px',
+        boxShadow: '0 2px 10px rgba(0,0,0,0.1)',
+        marginBottom: '30px'
+      }}>
+        <h3 style={{ margin: '0 0 20px 0', color: '#2c3e50' }}>Quick Actions</h3>
+        <div style={{
+          display: 'grid',
+          gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))',
+          gap: '15px'
+        }}>
+          <button 
+            onClick={() => setActiveComponent('addProduct')}
+            style={{
+              backgroundColor: '#3498db',
+              color: 'white',
+              border: 'none',
+              borderRadius: '6px',
+              padding: '12px',
+              cursor: 'pointer',
+              fontSize: '16px',
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center'
+            }}
+          >
+            <span style={{ fontSize: '24px', marginBottom: '5px' }}>+</span>
+            Add New Product
+          </button>
+          
+          <button 
+            onClick={() => setActiveComponent('addCategory')}
+            style={{
+              backgroundColor: '#f39c12',
+              color: 'white',
+              border: 'none',
+              borderRadius: '6px',
+              padding: '12px',
+              cursor: 'pointer',
+              fontSize: '16px',
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center'
+            }}
+          >
+            <span style={{ fontSize: '24px', marginBottom: '5px' }}>+</span>
+            Add New Category
+          </button>
+          
+          <button 
+            onClick={() => setActiveComponent('addSubcategory')}
+            style={{
+              backgroundColor: '#2ecc71',
+              color: 'white',
+              border: 'none',
+              borderRadius: '6px',
+              padding: '12px',
+              cursor: 'pointer',
+              fontSize: '16px',
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center'
+            }}
+          >
+            <span style={{ fontSize: '24px', marginBottom: '5px' }}>+</span>
+            Add New Subcategory
+          </button>
+        </div>
+      </div>
+
+      {/* Recent Products Section */}
+      <div style={{
+        backgroundColor: 'white',
+        borderRadius: '8px',
+        padding: '20px',
+        boxShadow: '0 2px 10px rgba(0,0,0,0.1)'
+      }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '15px' }}>
+          <h3 style={{ margin: 0, color: '#2c3e50' }}>Recent Products</h3>
+          <button 
+            onClick={() => setActiveComponent('viewProducts')}
+            style={{
+              backgroundColor: 'transparent',
+              color: '#3498db',
+              border: 'none',
+              cursor: 'pointer',
+              fontSize: '14px',
+              fontWeight: 'bold'
+            }}
+          >
+            View All
+          </button>
+        </div>
+        
+        {products.slice(0, 3).length > 0 ? (
+          <div style={{ overflowX: 'auto' }}>
+            <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+              <thead>
+                <tr style={{ backgroundColor: '#ecf0f1' }}>
+                  <th style={{ padding: '12px 15px', textAlign: 'left' }}>Product</th>
+                  <th style={{ padding: '12px 15px', textAlign: 'left' }}>Price</th>
+                  <th style={{ padding: '12px 15px', textAlign: 'left' }}>Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                {products.slice(0, 3).map(product => (
+                  <tr key={product._id} style={{ borderBottom: '1px solid #eee' }}>
+                    <td style={{ padding: '12px 15px' }}>
+                      <div style={{ display: 'flex', alignItems: 'center' }}>
+                        <img 
+                          src={product.imageURL} 
+                          alt={product.name}
+                          style={{ 
+                            width: '40px', 
+                            height: '40px', 
+                            objectFit: 'cover', 
+                            borderRadius: '4px',
+                            marginRight: '10px'
+                          }} 
+                        />
+                        {product.name}
+                      </div>
+                    </td>
+                    <td style={{ padding: '12px 15px' }}>₹{product.price}</td>
+                    <td style={{ padding: '12px 15px' }}>
+                      <span style={{
+                        backgroundColor: product.status === 'active' ? '#27ae60' : '#e74c3c',
+                        color: 'white',
+                        padding: '4px 8px',
+                        borderRadius: '4px',
+                        fontSize: '12px'
+                      }}>
+                        {product.status}
+                      </span>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        ) : (
+          <p style={{ textAlign: 'center', color: '#7f8c8d' }}>No products found</p>
+        )}
+      </div>
+    </div>
+  );
             case 'addProduct':
                 return (
                     <div style={{
@@ -892,25 +1183,40 @@ const updateSubcategory = async (subcategoryId, updatedData, categoryId) => {
                         color: '#bdc3c7',
                     }}>Seller Dashboard</h3>
                     <ul style={{
-                        listStyle: 'none',
-                        padding: 0,
-                        margin: 0,
-                    }}>
-                        <li 
-                            style={activeComponent === 'addProduct' ? {
-                                padding: '12px 20px',
-                                cursor: 'pointer',
-                                backgroundColor: '#34495e',
-                                borderLeft: '4px solid #f39c12',
-                            } : {
-                                padding: '12px 20px',
-                                cursor: 'pointer',
-                                transition: 'background-color 0.3s',
-                            }}
-                            onClick={() => setActiveComponent('addProduct')}
-                        >
-                            Add Product
-                        </li>
+  listStyle: 'none',
+  padding: 0,
+  margin: 0,
+}}>
+  <li 
+    style={activeComponent === 'overview' ? {
+      padding: '12px 20px',
+      cursor: 'pointer',
+      backgroundColor: '#34495e',
+      borderLeft: '4px solid #f39c12',
+    } : {
+      padding: '12px 20px',
+      cursor: 'pointer',
+      transition: 'background-color 0.3s',
+    }}
+    onClick={() => setActiveComponent('overview')}
+  >
+    Dashboard Overview
+  </li>
+  <li 
+    style={activeComponent === 'addProduct' ? {
+      padding: '12px 20px',
+      cursor: 'pointer',
+      backgroundColor: '#34495e',
+      borderLeft: '4px solid #f39c12',
+    } : {
+      padding: '12px 20px',
+      cursor: 'pointer',
+      transition: 'background-color 0.3s',
+    }}
+    onClick={() => setActiveComponent('addProduct')}
+  >
+    Add Product
+  </li>
                         <li 
                             style={activeComponent === 'viewProducts' ? {
                                 padding: '12px 20px',

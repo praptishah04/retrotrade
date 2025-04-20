@@ -228,7 +228,7 @@ const LandingPage = () => {
             <strong>Email:</strong> retro.tradee@gmail.com
           </p>
           <p>
-            <strong>Phone:</strong> +1 (123) 456-7890
+            <strong>Phone:</strong> +91 91234 56789
           </p>
           <p>
             <strong>Address:</strong> 123 Retro Lane, Ahmedabad, Gujarat, India
