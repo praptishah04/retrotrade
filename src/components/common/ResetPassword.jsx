@@ -52,7 +52,7 @@ export const ResetPassword = () => {
         const res = await axios.post("/user/resetpassword",obj)
         console.log(res.data)
         
-        navigate("/login")
+        navigate("/")
      
 
     }
