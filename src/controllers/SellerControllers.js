@@ -1,6 +1,7 @@
 const roleModel = require("../models/RoleModels")
 const sellerModel = require("../models/SellerModel")
 const bcrypt = require("bcrypt")
+const mailUtil = require("../utils/MailUtil")
 
 const addseller = async (req, res) => {
     try {
@@ -15,6 +16,7 @@ const addseller = async (req, res) => {
 
         // Fetch the "SELLER" role
         const sellerRole = await roleModel.findOne({ name: "SELLER" });
+        
         console.log("Fetched Seller Role:", sellerRole);
         if (!sellerRole) {
             return res.status(500).json({ message: "SELLER role not found. Please check your roles collection." });
@@ -34,7 +36,7 @@ const addseller = async (req, res) => {
         };
 
         const seller = await sellerModel.create(sellerData);
-
+        await mailUtil.sendingMail(seller.email,"welcome to retrotrade ","this is welcome mail")
         res.status(200).json({
             message: "seller added successfully",
             data: seller,

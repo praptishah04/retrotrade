@@ -1,6 +1,7 @@
 const buyerModel = require("../models/BuyerModel");
 const roleModel = require("../models/RoleModels");
 const bcrypt = require("bcrypt")
+const mailUtil = require("../utils/MailUtil")
 
 // Add a new buyer (Force roleId to "BUYER" & hash password)
 const addbuyer = async (req, res) => {
@@ -34,7 +35,7 @@ const addbuyer = async (req, res) => {
         };
 
         const buyer = await buyerModel.create(buyerData);
-
+        await mailUtil.sendingMail(buyer.email,"welcome to retrotrade ","this is welcome mail")
         res.status(200).json({
             message: "Buyer added successfully",
             data: buyer,
