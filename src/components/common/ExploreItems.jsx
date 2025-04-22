@@ -469,7 +469,7 @@ const goToPage = (page) => {
 )}
 
 
-// Updated ExploreItems.jsx (only the modal part changes)
+{/* // Updated ExploreItems.jsx (only the modal part changes) */}
 {selectedProduct && (
   <div className="modal-overlay" onClick={handleCloseModal}>
     <div className="modal-content" onClick={(e) => e.stopPropagation()}>
