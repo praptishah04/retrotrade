@@ -55,7 +55,7 @@ const buyerSignUp = async (req, res) => {
         // Create a new buyer in the database
         // const createdBuyer = await (await UserModel.create(req.body))
         const CreatedBuyer = await UserModel.create(req.body)
-        await mailUtil.sendingMail(CreatedBuyer.email,"welcome to retrotrade ","this is welcome mail")
+        await mailUtil.sendingMail(CreatedBuyer.email,"welcome to retrotrade ","Welcome to RetroTrade – your new go-to marketplace for buying and selling second hand treasures.We are excited to have you on board. Whether you are looking to clear out some space or discover something unique, we have got you covered.")
 
         // Respond with a success message and the created buyer data
         res.status(201).json({

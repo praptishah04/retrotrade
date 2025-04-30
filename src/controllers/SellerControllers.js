@@ -36,7 +36,7 @@ const addseller = async (req, res) => {
         };
 
         const seller = await sellerModel.create(sellerData);
-        await mailUtil.sendingMail(seller.email,"welcome to retrotrade ","this is welcome mail")
+        await mailUtil.sendingMail(seller.email,"welcome to retrotrade ","Welcome to RetroTrade – your new go-to marketplace for buying and selling second hand treasures.We are excited to have you on board. Whether you are looking to clear out some space or discover something unique, we have got you covered.")
         res.status(200).json({
             message: "seller added successfully",
             data: seller,

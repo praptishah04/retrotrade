@@ -17,8 +17,8 @@ const sendingMail = async(to,subject,text) => {
         from: 'retro.tradee@gmailcom',
         to: to,
         subject: subject,
-        // text: text
-        html:"<h1>"+text+"</h1>"
+        text: text
+        // html:"<h1>"+text+"</h1>"
     }
 
     const mailresponse = await transporter.sendMail(mailOptions);
